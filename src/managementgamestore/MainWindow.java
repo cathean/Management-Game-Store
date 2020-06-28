@@ -6,10 +6,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import java.awt.Component;
+import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -69,6 +73,7 @@ public class MainWindow extends javax.swing.JFrame {
         setTitle("Management Game Store");
         setBackground(new java.awt.Color(255, 255, 255));
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -78,7 +83,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Float.class, java.lang.Integer.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -425,31 +430,35 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     public void InitOtherComponent() {
-        jTable1.getColumn("Thumbnail").setCellRenderer(new CellRenderer());
-    }
-    
-    // Overriding TableCellRenderer method so we could use image in table cell
-    class CellRenderer implements TableCellRenderer {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            TableColumn tb = jTable1.getColumn("Thumbnail");
-            tb.setMaxWidth(120);
-            tb.setMinWidth(120);
-            jTable1.setRowHeight(120);
- 
-            return (Component) value;
-        }
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        
+        jTable1.getColumn("Thumbnail").setCellRenderer(new CustomTableRenderer().new CellRenderer());
+        jTable1.getColumn("Title").setCellRenderer(new CustomTableRenderer().new MultiLineTableCellRenderer());
+        jTable1.getColumn("Details").setCellRenderer(new CustomTableRenderer().new ButtonRenderer());
+        jTable1.getColumn("Details").setCellEditor(new CustomTableRenderer().new ButtonEditor(new JCheckBox()));
+        
+        
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        jTable1.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        jTable1.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        jTable1.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+        
+        jPanel1.setLayout(new GridLayout(1, 1));
+        jTable1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
     
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
         System.out.println("Clicked");
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
         
+        //Add image for table cell
         JLabel imgLabel = new JLabel();
         ImageIcon imgIcon = new ImageIcon("D:\\Study\\Java\\Management-Game-Store\\src\\uiassets\\chi.png");
         Image img = imgIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
         imgLabel.setIcon(new ImageIcon(img));
-        Object[] item = {imgLabel, "hohow", 1.1, 2, "heheheeh"};
+        
+        String[] a = {"ivan", "ongkodddddddddddddddddddddddd"};
+        Object[] item = {imgLabel, a, 18687678555578687.1, 2, "heheheeh"};
         model.addRow(item);
     }//GEN-LAST:event_btnAddMouseClicked
 
