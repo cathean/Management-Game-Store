@@ -1,6 +1,8 @@
 package managementgamestore;
 
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.Properties;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -21,6 +23,15 @@ public class GameAPIRequest {
                 .build();
 
         Response response = client.newCall(request).execute();
-        System.out.println(response.message());
+        String r = response.body().string();
+        System.out.println(r);
+        
+        Gson gson = new Gson();
+        
+        Properties data = gson.fromJson(response.body(), Properties.class);
+        String q = data.getProperty("query");
+        
+        
+        System.out.println(q);
     }
 }
