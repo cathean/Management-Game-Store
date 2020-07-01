@@ -39,7 +39,7 @@ public class AboutWindow extends javax.swing.JFrame {
         jLabel1.setText("Developed and designed by:");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText("<html>\nIvan Ongko S.<br>\nMochammad Bayu Satria<br>\nNaufal Fakhrizi<br>\nDanang Fadila<br>\n</html>");
+        jLabel2.setText("<html> Ivan Ongko S.<br> Mochammad Bayu Satria<br> Naufal Fakhri<br> Danang Fadila<br> </html>");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("<html>\nNIM 1<br>\nNIM 2<br>\nNIM 3<br>\nNIM 4<br>\n</html>");
