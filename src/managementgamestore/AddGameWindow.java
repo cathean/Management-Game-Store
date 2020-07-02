@@ -13,7 +13,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -367,6 +366,7 @@ public class AddGameWindow extends javax.swing.JFrame {
             jComboBox2.setModel(new DefaultComboBoxModel(JArrayToArray(GameAPIRequest.infoGameResults.get(index).getAsJsonObject("result").getAsJsonArray("publisher"))));
             jComboBox3.setModel(new DefaultComboBoxModel(JArrayToArray(GameAPIRequest.infoGameResults.get(index).getAsJsonObject("result").getAsJsonArray("genre"))));
             jTextArea1.setText(GameAPIRequest.infoGameResults.get(index).getAsJsonObject("result").get("description").getAsString());
+            jLabel7.setText(String.valueOf(GameAPIRequest.infoGameResults.get(index).getAsJsonObject("result").get("score").getAsInt()));
         } catch (MalformedURLException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
