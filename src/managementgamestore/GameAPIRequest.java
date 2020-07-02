@@ -114,8 +114,15 @@ public final class GameAPIRequest {
         
         // Convert the Json into Json Object Class
         infoGameResults.add(new JsonParser().parse(gameInfoBodyResponse).getAsJsonObject());
-        System.out.println(infoGameResults.get(infoGameResults.size() - 1).get("query").getAsString());
         
+        if(infoGameResults.get(infoGameResults.size() - 1).get("result").isJsonObject())
+            System.out.println(infoGameResults.get(infoGameResults.size() - 1).getAsJsonObject("result").get("title").getAsString());
+        
+    }
+    
+    public static void doClean() {
+        listSearchGame = null;
+        infoGameResults.clear();
     }
     
     public static void doSearch(String title) throws Exception {
