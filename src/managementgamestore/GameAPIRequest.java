@@ -7,6 +7,9 @@ package managementgamestore;
 // The source code from OkHttp Recipe
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
@@ -28,8 +31,8 @@ public final class GameAPIRequest {
     final static String rapidHost = "chicken-coop.p.rapidapi.com";
     final static String rapidKey = "8c48c14b5dmsh18f9df73b7bd045p151b67jsn00d403ecbbc3";
     
-    private static SearchGameJson gameSearchData = null;
-    private static List<GameInformationJson> gameInfoData;
+    public static JsonArray listSearchGame;
+    public static ArrayList<JsonObject> infoGameResults = new ArrayList<>();
     
     public void getGameSearch(String title) throws IOException {
         String gameSearchBodyResponse = "";
@@ -49,8 +52,10 @@ public final class GameAPIRequest {
         }
         
         // Store all the searched game information
-        gameSearchData = new Gson().fromJson(gameSearchBodyResponse, SearchGameJson.class);
-        System.out.println(gameSearchData.query);
+        JsonObject jsonObj = new JsonParser().parse(gameSearchBodyResponse).getAsJsonObject();
+        listSearchGame = jsonObj.getAsJsonArray("result");
+        
+        System.out.println(gameSearchBodyResponse);
     }
     
     public void run(String title, String platform) throws Exception {
@@ -107,21 +112,20 @@ public final class GameAPIRequest {
             System.out.println(gameInfoBodyResponse);
         }
         
-        // Convert the Json into java Object Class
-
-        GameInformationJson   gameInfoData = gson.fromJson(gameInfoBodyResponse, GameInformationJson.class);
+        // Convert the Json into Json Object Class
+        infoGameResults.add(new JsonParser().parse(gameInfoBodyResponse).getAsJsonObject());
+        System.out.println(infoGameResults.get(infoGameResults.size() - 1).get("query").getAsString());
         
-        System.out.println(gameInfoData.query);
     }
 
     public static void main(String... args) throws Exception {
         new GameAPIRequest().getGameSearch("Fable");
         String platform = "";
-        for(int i = 0; i < gameSearchData.result.length; i++)
+        for(int i = 1; i < listSearchGame.size(); i++)
         {
             System.out.println();
             
-            switch(gameSearchData.result[i].platform) {
+            switch(listSearchGame.get(i).getAsJsonObject().get("platform").getAsString()) {
                 case "PC" : platform = "pc";
                             break;
                 case "PS4" : platform = "playstation-4";
@@ -130,11 +134,11 @@ public final class GameAPIRequest {
                             break;
                 case "X360" : platform = "xbox";
                             break;
-                default:    System.out.println(gameSearchData.result[i].platform);
+                default:    platform = listSearchGame.get(i).getAsJsonObject().get("platform").getAsString();
                             
             }
             
-            new GameAPIRequest().run(gameSearchData.result[i].title, platform);
+            new GameAPIRequest().run(listSearchGame.get(i).getAsJsonObject().get("title").getAsString(), platform);
         }
     }
 
