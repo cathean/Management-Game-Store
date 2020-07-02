@@ -6,6 +6,9 @@
 package managementgamestore;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 
 /**
@@ -13,7 +16,7 @@ import javax.swing.UIManager;
  * @author ivans
  */
 public class AddGameWindow extends javax.swing.JFrame {
-
+    public String search = "";
     /**
      * Creates new form AddGameWindow
      */
@@ -49,6 +52,11 @@ public class AddGameWindow extends javax.swing.JFrame {
         jLabel2.setText("Game Title : ");
 
         jButton1.setText("Search");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -85,6 +93,11 @@ public class AddGameWindow extends javax.swing.JFrame {
         jButton2.setText("Add to Stock");
 
         jButton3.setText("Clear");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Search Information"));
 
@@ -163,6 +176,25 @@ public class AddGameWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            GameAPIRequest gameSearch = new GameAPIRequest();
+            String title = java.net.URLEncoder.encode(jTextField1.getText(), "UTF-8").replace("+", "%20");
+            
+            System.out.println(title);
+            gameSearch.doSearch(title);
+            
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(AddGameWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AddGameWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        jTextField1.setText("");
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

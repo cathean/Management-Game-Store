@@ -117,9 +117,9 @@ public final class GameAPIRequest {
         System.out.println(infoGameResults.get(infoGameResults.size() - 1).get("query").getAsString());
         
     }
-
-    public static void main(String... args) throws Exception {
-        new GameAPIRequest().getGameSearch("Fable");
+    
+    public static void doSearch(String title) throws Exception {
+        new GameAPIRequest().getGameSearch(title);
         String platform = "";
         for(int i = 1; i < listSearchGame.size(); i++)
         {
@@ -128,9 +128,13 @@ public final class GameAPIRequest {
             switch(listSearchGame.get(i).getAsJsonObject().get("platform").getAsString()) {
                 case "PC" : platform = "pc";
                             break;
+                case "PS3" : platform = "playstation-3";
+                            break;
                 case "PS4" : platform = "playstation-4";
                             break;
                 case "Switch" : platform = "switch";
+                            break;
+                case "iOS" : platform = "ios";
                             break;
                 case "X360" : platform = "xbox";
                             break;

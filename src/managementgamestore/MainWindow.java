@@ -3,16 +3,18 @@ package managementgamestore;
 import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -20,6 +22,9 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @author ivans
  */
 public class MainWindow extends javax.swing.JFrame {
+    private Image image = null;
+    private ImageIcon imageIcon = new ImageIcon();
+    private JLabel imageLabel = new JLabel();
 
     public MainWindow() {
         initComponents();
@@ -102,7 +107,7 @@ public class MainWindow extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Game Stock", jPanel1);
@@ -137,9 +142,9 @@ public class MainWindow extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 348, Short.MAX_VALUE)
+            .addGap(0, 353, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Voucher Stock", jPanel2);
@@ -198,9 +203,9 @@ public class MainWindow extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 348, Short.MAX_VALUE)
+            .addGap(0, 353, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Payment Method", jPanel3);
@@ -274,7 +279,6 @@ public class MainWindow extends javax.swing.JFrame {
         btnLog.setToolTipText("View transaction log.");
         btnLog.setFocusable(false);
         btnLog.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnLog.setOpaque(false);
         btnLog.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
         btnDiscount.setBackground(new java.awt.Color(242, 242, 242));
@@ -282,7 +286,6 @@ public class MainWindow extends javax.swing.JFrame {
         btnDiscount.setToolTipText("Open discount event manager.");
         btnDiscount.setFocusable(false);
         btnDiscount.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnDiscount.setOpaque(false);
         btnDiscount.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
         btnCancel.setBackground(new java.awt.Color(242, 242, 242));
@@ -382,22 +385,24 @@ public class MainWindow extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(btnFind)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnSetting)
+                            .addComponent(btnVer)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnUser)
                             .addComponent(btnLog)
-                            .addComponent(btnDiscount))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGap(7, 7, 7)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel1)
-                                .addComponent(btnFind))
-                            .addGap(11, 11, 11)))
-                    .addComponent(btnSetting)
-                    .addComponent(btnVer))
+                            .addComponent(btnDiscount))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -425,6 +430,9 @@ public class MainWindow extends javax.swing.JFrame {
         jTable1.getColumn("Details").setCellRenderer(new CustomTableRenderer().new ButtonRenderer());
         jTable1.getColumn("Details").setCellEditor(new CustomTableRenderer().new ButtonEditor(new JCheckBox()));
         
+        // Use ram cache for image IO
+        ImageIO.setUseCache(false);
+        
         
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         jTable1.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
@@ -438,15 +446,18 @@ public class MainWindow extends javax.swing.JFrame {
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
         System.out.println("Clicked");
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+
+        //URL url = new URL("https://static.metacritic.com/images/products/games/9/e4c7dbc585abaa821cfabfd32507b834-98.jpg");
+        //image = ImageIO.read(url).getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        imageIcon = new ImageIcon("file:///home/cathean/Documents/Java/Management-Game-Store/src/uiassets/game.jpg");
+        image = imageIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        imageIcon.setImage(image);
         
-        //Add image for table cell
-        JLabel imgLabel = new JLabel();
-        ImageIcon imgIcon = new ImageIcon("D:\\Study\\Java\\Management-Game-Store\\src\\uiassets\\chi.png");
-        Image img = imgIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
-        imgLabel.setIcon(new ImageIcon(img));
+        //Image img = imgIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        imageLabel.setIcon(imageIcon);
         
         String[] a = {"ivan", "ongkodddddddddddddddddddddddd"};
-        Object[] item = {imgLabel, a, 18687678555578687.1, 2, "Click for more details"};
+        Object[] item = {imageLabel, a, 18687678555578687.1, 2, "Click for more details"};
         model.addRow(item);
     }//GEN-LAST:event_btnAddMouseClicked
 
