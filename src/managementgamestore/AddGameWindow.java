@@ -27,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class AddGameWindow extends javax.swing.JFrame {
     public String search = "";
+    public int curIndex = -1;
     private int lastIndex = -1;
     private Image image = null;
     private GameAPIRequest gameSearch = new GameAPIRequest();
@@ -120,6 +121,11 @@ public class AddGameWindow extends javax.swing.JFrame {
         );
 
         jButton2.setText("Add to Stock");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Clear");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -344,13 +350,13 @@ public class AddGameWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        int index = jTable1.getSelectedRow();
+        curIndex = jTable1.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         
-        if(index == lastIndex)
+        if(curIndex == lastIndex)
             return;
         
-        System.out.println(model.getValueAt(index, 0).toString());
+        System.out.println(model.getValueAt(curIndex, 0).toString());
         jComboBox1.removeAllItems();
         jComboBox2.removeAllItems();
         jComboBox3.removeAllItems();
@@ -358,23 +364,27 @@ public class AddGameWindow extends javax.swing.JFrame {
         URL url;
         try {
             // Need validation if image is exist or not
-            url = new URL(GameAPIRequest.infoGameResults.get(index).getAsJsonObject("result").get("image").getAsString());
+            url = new URL(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").get("image").getAsString());
             image = ImageIO.read(url).getScaledInstance(160, 225, Image.SCALE_SMOOTH);
             
             jLabel4.setIcon(new ImageIcon(image));
-            jComboBox1.setModel(new DefaultComboBoxModel(JArrayToArray(GameAPIRequest.infoGameResults.get(index).getAsJsonObject("result").getAsJsonArray("alsoAvailableOn"))));
-            jComboBox2.setModel(new DefaultComboBoxModel(JArrayToArray(GameAPIRequest.infoGameResults.get(index).getAsJsonObject("result").getAsJsonArray("publisher"))));
-            jComboBox3.setModel(new DefaultComboBoxModel(JArrayToArray(GameAPIRequest.infoGameResults.get(index).getAsJsonObject("result").getAsJsonArray("genre"))));
-            jTextArea1.setText(GameAPIRequest.infoGameResults.get(index).getAsJsonObject("result").get("description").getAsString());
-            jLabel7.setText(String.valueOf(GameAPIRequest.infoGameResults.get(index).getAsJsonObject("result").get("score").getAsInt()));
+            jComboBox1.setModel(new DefaultComboBoxModel(JArrayToArray(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").getAsJsonArray("alsoAvailableOn"))));
+            jComboBox2.setModel(new DefaultComboBoxModel(JArrayToArray(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").getAsJsonArray("publisher"))));
+            jComboBox3.setModel(new DefaultComboBoxModel(JArrayToArray(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").getAsJsonArray("genre"))));
+            jTextArea1.setText(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").get("description").getAsString());
+            jLabel7.setText(String.valueOf(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").get("score").getAsInt()));
         } catch (MalformedURLException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        lastIndex = index;
+        lastIndex = curIndex;
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        new SaveStockWindow().setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

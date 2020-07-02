@@ -331,9 +331,9 @@ public class MainWindow extends javax.swing.JFrame {
         btnAdd.setFocusable(false);
         btnAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAdd.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnAddMouseClicked(evt);
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
             }
         });
 
@@ -475,24 +475,6 @@ public class MainWindow extends javax.swing.JFrame {
         ImageIO.setUseCache(false);
     }
     
-    private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
-        System.out.println("Clicked");
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-
-
-            //URL url = new URL("https://static.metacritic.com/images/products/games/9/e4c7dbc585abaa821cfabfd32507b834-98.jpg");
-            //image = ImageIO.read(url).getScaledInstance(120, 120, Image.SCALE_SMOOTH);
-            //imageIcon = new ImageIcon(url);
-            //Image img = imageIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
-            //imageLabel.setIcon(new ImageIcon(img));
-        
-
-        
-        String a = "ivan";
-        Object[] item = {a, 18687.1, 2, "Click for more details"};
-        model.addRow(item);
-    }//GEN-LAST:event_btnAddMouseClicked
-
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         int index = jTable1.getSelectedRow();
         
@@ -513,6 +495,11 @@ public class MainWindow extends javax.swing.JFrame {
         
         lastIndex = index;
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        this.dispose();
+        new AddGameWindow().setVisible(true);
+    }//GEN-LAST:event_btnAddActionPerformed
 
     
     /**
