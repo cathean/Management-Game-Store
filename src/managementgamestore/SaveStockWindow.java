@@ -37,6 +37,7 @@ public class SaveStockWindow extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Save");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
