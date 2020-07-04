@@ -76,6 +76,7 @@ public class AddGameWindow extends javax.swing.JFrame {
         jComboBox3 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Add Game");
 
         jLabel2.setText("Game Title : ");
 

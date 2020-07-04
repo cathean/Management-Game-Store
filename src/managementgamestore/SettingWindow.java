@@ -44,6 +44,8 @@ public class SettingWindow extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Setting");
+        setResizable(false);
 
         jTextField1.setText("root");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
