@@ -20,7 +20,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author ivans
@@ -309,13 +308,7 @@ public class AddGameWindow extends javax.swing.JFrame {
         }
     }
     
-    public String[] JArrayToArray(JsonArray JArr) {
-        ArrayList<String> list = new ArrayList<>();
-        for(int i = 0; i < JArr.size(); i++) {
-            list.add(JArr.get(i).getAsString());
-        }
-        return list.toArray(new String[list.size()]);
-    }
+
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
@@ -369,9 +362,9 @@ public class AddGameWindow extends javax.swing.JFrame {
             image = ImageIO.read(url).getScaledInstance(160, 225, Image.SCALE_SMOOTH);
             
             jLabel4.setIcon(new ImageIcon(image));
-            jComboBox1.setModel(new DefaultComboBoxModel(JArrayToArray(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").getAsJsonArray("alsoAvailableOn"))));
-            jComboBox2.setModel(new DefaultComboBoxModel(JArrayToArray(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").getAsJsonArray("publisher"))));
-            jComboBox3.setModel(new DefaultComboBoxModel(JArrayToArray(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").getAsJsonArray("genre"))));
+            jComboBox1.setModel(new DefaultComboBoxModel(GameUtils.JArrayToArray(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").getAsJsonArray("alsoAvailableOn"))));
+            jComboBox2.setModel(new DefaultComboBoxModel(GameUtils.JArrayToArray(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").getAsJsonArray("publisher"))));
+            jComboBox3.setModel(new DefaultComboBoxModel(GameUtils.JArrayToArray(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").getAsJsonArray("genre"))));
             jTextArea1.setText(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").get("description").getAsString());
             jLabel7.setText(String.valueOf(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").get("score").getAsInt()));
         } catch (MalformedURLException ex) {
@@ -384,7 +377,7 @@ public class AddGameWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new SaveStockWindow().setVisible(true);
+        new SaveStockWindow(curIndex).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
