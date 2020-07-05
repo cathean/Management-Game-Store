@@ -23,6 +23,8 @@ import static org.mentaregex.Regex.match;
  * @author cathean
  */
 public class Testing {
+    public DBManager dbm = DBManager.getInstance();
+    
     
     public static int hashCode(String s) {
         return s != null ? s.hashCode() * 3 : 0;  // PRIME = 31 or another prime number.

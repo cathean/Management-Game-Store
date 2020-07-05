@@ -308,8 +308,6 @@ public class AddGameWindow extends javax.swing.JFrame {
         }
     }
     
-
-    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -326,8 +324,7 @@ public class AddGameWindow extends javax.swing.JFrame {
                         GameAPIRequest.infoGameResults.get(i).getAsJsonObject("result").get("title").getAsString(),
                         GameAPIRequest.infoGameResults.get(i).getAsJsonObject("result").get("developer").getAsString(),
                         GameAPIRequest.infoGameResults.get(i).getAsJsonObject("result").get("releaseDate").getAsString(),
-                        GameAPIRequest.infoGameResults.get(i).getAsJsonObject("result").get("rating").getAsString()
-                    };
+                        GameAPIRequest.infoGameResults.get(i).getAsJsonObject("result").get("rating").getAsString()};
                     
                     model.addRow(item);
                 }

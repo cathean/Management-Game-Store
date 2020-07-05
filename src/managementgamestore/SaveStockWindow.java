@@ -41,8 +41,8 @@ public class SaveStockWindow extends javax.swing.JFrame {
         this.i = i;
         
         ArrayList<Float> arr = new ArrayList<Float>();
-        arr = dbm.fetchPriceAndTaxGameByID(id_game);
         id_game = MakeGameUID(GameAPIRequest.infoGameResults.get(i).getAsJsonObject("result").get("title").getAsString());
+        arr = dbm.fetchPriceAndTaxGameByID(id_game);
         
         if(arr.size() > 0) {
             isExist = true;
@@ -202,7 +202,8 @@ public class SaveStockWindow extends javax.swing.JFrame {
                     GameAPIRequest.infoGameResults.get(i).getAsJsonObject("result").get("description").getAsString(),
                     String.join(",", GameUtils.JArrayToArray(GameAPIRequest.infoGameResults.get(i).getAsJsonObject("result").getAsJsonArray("genre"))),
                     String.join(",", GameUtils.JArrayToArray(GameAPIRequest.infoGameResults.get(i).getAsJsonObject("result").getAsJsonArray("alsoAvailableOn"))),
-                    Integer.parseInt(jTextField2.getText()));
+                    Integer.parseInt(jTextField2.getText()),
+                    GameAPIRequest.infoGameResults.get(i).getAsJsonObject("result").get("image").getAsString());
         }
         
         dbm.saveGameCode(code_list, id_game);

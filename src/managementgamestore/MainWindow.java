@@ -3,20 +3,18 @@ package managementgamestore;
 import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -26,8 +24,17 @@ public class MainWindow extends javax.swing.JFrame {
     private Image image = null;
     private ImageIcon imageIcon = new ImageIcon();
     private JLabel imageLabel = new JLabel();
-    private TableModel model = null;
+    private DefaultTableModel model = null;
+    private int curIndex = -1;
     private int lastIndex = -1;
+    private DBManager dbm = DBManager.getInstance();
+    ArrayList<GameStruct> gs = new ArrayList<GameStruct>();
+    
+    public int gameQty = 0;
+    public ArrayList<Long> gameIdList = new ArrayList<Long>();
+    public int vouchQty = 0;
+    public ArrayList<Integer> vouchIdList = new ArrayList<Integer>();
+    public int sumPrice = 0;
 
     public MainWindow() {
         initComponents();
@@ -78,13 +85,12 @@ public class MainWindow extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -100,11 +106,11 @@ public class MainWindow extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title", "Price", "Stock", "Details"
+                "Title", "Price", "Tax", "Stock"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -350,17 +356,25 @@ public class MainWindow extends javax.swing.JFrame {
 
         jLabel5.setText("Platforms :");
 
-        jLabel6.setText("Score :");
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel7.setText("100");
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel8.setText("/ 100");
-
-        jLabel10.setText("Publisher :");
-
         jLabel12.setText("Genre :");
+
+        jButton1.setText("Add to Cart");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setText("How many :");
+
+        jTextField2.setText("1");
+
+        jButton2.setText("Clear Cart");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -370,25 +384,22 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jComboBox1, 0, 140, Short.MAX_VALUE)
+                                .addComponent(jLabel5)
+                                .addComponent(jComboBox3, 0, 140, Short.MAX_VALUE)
+                                .addComponent(jLabel12)
+                                .addComponent(jLabel13)
+                                .addComponent(jTextField2))
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel12)))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(48, 48, 48)
-                                .addComponent(jLabel7)
+                                .addComponent(jButton1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel8)))
-                        .addGap(55, 55, 55)))
+                                .addComponent(jButton2)))
+                        .addGap(3, 3, 3)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -402,21 +413,17 @@ public class MainWindow extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
+                        .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(jLabel8)))))
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2))))
                 .addGap(14, 14, 14)
                 .addComponent(jScrollPane4)
                 .addContainerGap())
@@ -467,7 +474,7 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 418, Short.MAX_VALUE)
                                 .addComponent(btnShop)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnAdd)
@@ -525,33 +532,51 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     public void InitOtherComponent() {
-        jTable1.getColumn("Details").setCellRenderer(new CustomTableRenderer().new ButtonRenderer());
-        jTable1.getColumn("Details").setCellEditor(new CustomTableRenderer().new ButtonEditor(new JCheckBox()));
-        model = jTable1.getModel();
+        //jTable1.getColumn("Details").setCellRenderer(new CustomTableRenderer().new ButtonRenderer());
+        //jTable1.getColumn("Details").setCellEditor(new CustomTableRenderer().new ButtonEditor(new JCheckBox()));
+        model = (DefaultTableModel) jTable1.getModel();
+        jTextArea1.setLineWrap(true);
         
         // Use ram cache for image IO
         ImageIO.setUseCache(false);
+        
+        // Load list of game and display it in table
+        gs = dbm.fetchGameStock();
+        
+        for(int i = 0; i < gs.size(); i++) {
+            model.addRow(new Object[] {gs.get(i).nama_game,
+                    gs.get(i).harga,
+                    gs.get(i).pajak});
+        }
     }
     
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        int index = jTable1.getSelectedRow();
+        curIndex = jTable1.getSelectedRow();
         
-        if(index == lastIndex)
+        if(curIndex == lastIndex)
             return;
         
-        System.out.println(model.getValueAt(index, 0).toString());
+        System.out.println(curIndex);
+        System.out.println(gs.get(curIndex).url);
+        jComboBox1.removeAllItems();
+        jComboBox3.removeAllItems();
+        jTextArea1.setText("");
+        
         URL url;
         try {
-            url = new URL("https://static.metacritic.com/images/products/games/9/e4c7dbc585abaa821cfabfd32507b834-98.jpg");
+            url = new URL(gs.get(curIndex).url);
             image = ImageIO.read(url).getScaledInstance(160, 225, Image.SCALE_SMOOTH);
             jLabel4.setIcon(new ImageIcon(image));
+            jComboBox1.setModel(new DefaultComboBoxModel(GameUtils.StringToArray(gs.get(curIndex).platform)));
+            jComboBox3.setModel(new DefaultComboBoxModel(GameUtils.StringToArray(gs.get(curIndex).genre)));
+            jTextArea1.setText(gs.get(curIndex).deskripsi);
         } catch (MalformedURLException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        lastIndex = index;
+        lastIndex = curIndex;
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -566,6 +591,31 @@ public class MainWindow extends javax.swing.JFrame {
     private void btnSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingActionPerformed
         new SettingWindow().setVisible(true);
     }//GEN-LAST:event_btnSettingActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(jTabbedPane1.getSelectedIndex() == 0) {
+            // Game tab
+            gameQty = gameQty + Integer.parseInt(jTextField2.getText());
+            
+            for(int i = 0; i < Integer.parseInt(jTextField2.getText()); i++)
+                gameIdList.add(gs.get(curIndex).id_game);
+            
+            System.out.println("Current game quantity to be bought : " + String.valueOf(gameQty));
+            System.out.println("Just add game with id : " + gs.get(curIndex).id_game + " to the cart!");
+        } else if(jTabbedPane1.getSelectedIndex() == 1) {
+            // Voucher tab
+            vouchQty = vouchQty + 1;
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        gameQty = 0;
+        vouchQty = 0;
+        gameIdList.clear();
+        vouchIdList.clear();
+        
+        System.out.println("All cart cleared!");
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     
     /**
@@ -616,19 +666,17 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnShop;
     private javax.swing.JButton btnUser;
     private javax.swing.JButton btnVer;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -650,5 +698,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTable jTable3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

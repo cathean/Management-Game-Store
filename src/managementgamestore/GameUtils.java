@@ -7,6 +7,8 @@ package managementgamestore;
 
 import com.google.gson.JsonArray;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -19,5 +21,9 @@ public class GameUtils {
             list.add(JArr.get(i).getAsString());
         }
         return list.toArray(new String[list.size()]);
+    }
+    
+    public static String[] StringToArray(String arr) {
+        return arr.split("\\s*,\\s*");
     }
 }
