@@ -185,6 +185,9 @@
               <Image iconType="3" name="/githubimages/67364183.jpg"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel7MouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
@@ -203,6 +206,9 @@
               <Image iconType="3" name="/githubimages/67364196.jpg"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel9MouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
@@ -232,6 +238,9 @@
               <Image iconType="3" name="/githubimages/17994381.jpg"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel12MouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel13">
           <Properties>
@@ -239,6 +248,9 @@
               <Image iconType="3" name="/githubimages/64570623.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel13MouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel14">
           <Properties>
@@ -296,7 +308,7 @@
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="Chicken Coop API by valkiki:&#xa;https://rapidapi.com/valkiki/api/chicken-coop&#xa;&#xa;Git:&#xa;https://git-scm.com&#xa;&#xa;GitHub for hosting our repo:&#xa;https://github.com"/>
+                <Property name="text" type="java.lang.String" value="Chicken Coop API by valkiki: &#xa;https://rapidapi.com/valkiki/api/chicken-coop&#xa;&#xa;Git: &#xa;https://git-scm.com&#xa;&#xa;GitHub for hosting our repo: &#xa;https://github.com&#xa;&#xa;JCalendar: https://toedter.com/jcalendar/&#xa;Licensed under GNU Lesser General Public License (http://www.gnu.org/licenses/lgpl-3.0.html)"/>
               </Properties>
             </Component>
           </SubComponents>

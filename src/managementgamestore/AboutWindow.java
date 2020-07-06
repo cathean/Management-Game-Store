@@ -61,6 +61,11 @@ public class AboutWindow extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Developed and designed by"));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/githubimages/67364183.jpg"))); // NOI18N
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel8.setText("<html><a href=\"\">Danang Fadila<a><br> 10118158</html>");
@@ -71,6 +76,11 @@ public class AboutWindow extends javax.swing.JFrame {
         });
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/githubimages/67364196.jpg"))); // NOI18N
+        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel9MouseClicked(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setText("<html>\n<a href=\"\">M. Bayu Satria Pratama<a><br>\n10118149</html>");
@@ -89,8 +99,18 @@ public class AboutWindow extends javax.swing.JFrame {
         });
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/githubimages/17994381.jpg"))); // NOI18N
+        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel12MouseClicked(evt);
+            }
+        });
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/githubimages/64570623.png"))); // NOI18N
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel13MouseClicked(evt);
+            }
+        });
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel14.setText("<html><a href=\"\">M. Naufal Fakhri<a><br> 10118142</html>");
@@ -179,7 +199,7 @@ public class AboutWindow extends javax.swing.JFrame {
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("Chicken Coop API by valkiki:\nhttps://rapidapi.com/valkiki/api/chicken-coop\n\nGit:\nhttps://git-scm.com\n\nGitHub for hosting our repo:\nhttps://github.com");
+        jTextArea1.setText("Chicken Coop API by valkiki: \nhttps://rapidapi.com/valkiki/api/chicken-coop\n\nGit: \nhttps://git-scm.com\n\nGitHub for hosting our repo: \nhttps://github.com\n\nJCalendar: https://toedter.com/jcalendar/\nLicensed under GNU Lesser General Public License (http://www.gnu.org/licenses/lgpl-3.0.html)");
         jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -266,6 +286,43 @@ public class AboutWindow extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error");
         }
     }//GEN-LAST:event_jLabel14MouseClicked
+
+    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
+        try {
+            // TODO add your handling code here:
+            Desktop.getDesktop().browse(new URI("https://github.com/cathean"));
+        } catch (IOException | URISyntaxException e1) {
+            JOptionPane.showMessageDialog(null, "Error");
+        }
+    }//GEN-LAST:event_jLabel12MouseClicked
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        try {
+            // TODO add your handling code here:
+            Desktop.getDesktop().browse(new URI("https://github.com/Aerebus"));
+        } catch (IOException | URISyntaxException e1) {
+            JOptionPane.showMessageDialog(null, "Error");
+        }
+    }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            Desktop.getDesktop().browse(new URI("https://github.com/RiesbyfeNNN"));
+        } catch (IOException | URISyntaxException e1) {
+            JOptionPane.showMessageDialog(null, "Error");
+        }
+    }//GEN-LAST:event_jLabel9MouseClicked
+
+    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+        try {
+            // TODO add your handling code here:
+            Desktop.getDesktop().browse(new URI("https://github.com/Maimito"));
+        } catch (IOException | URISyntaxException e1) {
+            JOptionPane.showMessageDialog(null, "Error");
+        }
+    }//GEN-LAST:event_jLabel13MouseClicked
 
     /**
      * @param args the command line arguments
