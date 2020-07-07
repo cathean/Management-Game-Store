@@ -30,4 +30,3 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-nbproject/private/private.properties
