@@ -191,9 +191,11 @@ public class AboutWindow extends javax.swing.JFrame {
 
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
+        jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
         jTextArea1.setText("Chicken Coop API by valkiki: \nhttps://rapidapi.com/valkiki/api/chicken-coop\n\nJCalendar: \nhttps://toedter.com/jcalendar/\nLicensed under GNU Lesser General Public License (http://www.gnu.org/licenses/lgpl-3.0.html)\n\nGuava:\nhttps://guava.dev\n\nFlatLaf:\nhttps://www.formdev.com/flatlaf/"); // NOI18N
         jTextArea1.setWrapStyleWord(true);
+        jTextArea1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTextArea1.setOpaque(false);
         jScrollPane1.setViewportView(jTextArea1);
 

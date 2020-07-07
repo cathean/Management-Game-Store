@@ -305,9 +305,13 @@
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
+                <Property name="lineWrap" type="boolean" value="true"/>
                 <Property name="rows" type="int" value="5"/>
                 <Property name="text" type="java.lang.String" value="Chicken Coop API by valkiki: &#xa;https://rapidapi.com/valkiki/api/chicken-coop&#xa;&#xa;JCalendar: &#xa;https://toedter.com/jcalendar/&#xa;Licensed under GNU Lesser General Public License (http://www.gnu.org/licenses/lgpl-3.0.html)&#xa;&#xa;Guava:&#xa;https://guava.dev&#xa;&#xa;FlatLaf:&#xa;https://www.formdev.com/flatlaf/" noResource="true"/>
                 <Property name="wrapStyleWord" type="boolean" value="true"/>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Default Cursor"/>
+                </Property>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
             </Component>
