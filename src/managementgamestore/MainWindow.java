@@ -546,7 +546,8 @@ public class MainWindow extends javax.swing.JFrame {
         for(int i = 0; i < gs.size(); i++) {
             model.addRow(new Object[] {gs.get(i).nama_game,
                     gs.get(i).harga,
-                    gs.get(i).pajak});
+                    gs.get(i).pajak, 
+                    dbm.fetchGameStockCount(gs.get(i).id_game)});
         }
     }
     

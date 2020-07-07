@@ -96,6 +96,28 @@ class DBManager {
         return arr;
     }
     
+    public int fetchGameStockCount(long id_game) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SELECT COUNT(*) as stock FROM `gamestore`.`game_code`, `gamestore`.`game` WHERE `game`.id_game=?";
+        int count = 0;
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setLong(1, id_game);
+            ResultSet rs = preparedStmt.executeQuery();
+            
+            if(rs.next()) {
+                System.out.println("Count fetched id " + id_game + " : " + rs.getInt("stock"));
+                count = rs.getInt("stock");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return count;
+    }
+    
     public ArrayList<GameStruct> fetchGameStock() {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query = "SELECT * FROM `gamestore`.`game`";
