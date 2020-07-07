@@ -98,7 +98,8 @@ class DBManager {
     
     public int fetchGameStockCount(long id_game) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "SELECT COUNT(*) as stock FROM `gamestore`.`game_code`, `gamestore`.`game` WHERE `game`.id_game=?";
+        String query = "SELECT COUNT(*) as stock FROM `gamestore`.`game_code`, `gamestore`.`game` "
+                + "WHERE `game_code`.id_game=`game`.`id_game` AND `game`.id_game=?";
         int count = 0;
         
         try {

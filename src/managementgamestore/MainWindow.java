@@ -30,11 +30,10 @@ public class MainWindow extends javax.swing.JFrame {
     private DBManager dbm = DBManager.getInstance();
     ArrayList<GameStruct> gs = new ArrayList<GameStruct>();
     
-    public int gameQty = 0;
+    public ArrayList<Integer> gameQty = new ArrayList<Integer>();
     public ArrayList<Long> gameIdList = new ArrayList<Long>();
-    public int vouchQty = 0;
+    public ArrayList<Integer> vouchQty = new ArrayList<Integer>();;
     public ArrayList<Integer> vouchIdList = new ArrayList<Integer>();
-    public int sumPrice = 0;
 
     public MainWindow() {
         initComponents();
@@ -239,6 +238,11 @@ public class MainWindow extends javax.swing.JFrame {
         btnShop.setFocusable(false);
         btnShop.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnShop.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnShop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShopActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Search : ");
 
@@ -581,7 +585,6 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        this.dispose();
         new AddGameWindow().setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -596,6 +599,17 @@ public class MainWindow extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(jTabbedPane1.getSelectedIndex() == 0) {
             // Game tab
+            
+            // Stock validation
+            if(dbm.fetchGameStockCount(gs.get(curIndex).id_game) > Integer.parseInt(jTextField2.getText()) &&
+                    !((Integer)model.getValueAt(curIndex, 3) <= 0)) {
+                model.setValueAt((Integer)model.getValueAt(curIndex, 3) - 1, curIndex, 3);
+                System.out.println("Current stock : " + (Integer)model.getValueAt(curIndex, 3));
+            } else {
+                System.out.println("Stock not enough!");
+                return;
+            }
+            
             gameQty = gameQty + Integer.parseInt(jTextField2.getText());
             
             for(int i = 0; i < Integer.parseInt(jTextField2.getText()); i++)
@@ -617,6 +631,10 @@ public class MainWindow extends javax.swing.JFrame {
         
         System.out.println("All cart cleared!");
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnShopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShopActionPerformed
+        new TransWindow(gameIdList, vouchIdList, gameQty, vouchQty).setVisible(true);
+    }//GEN-LAST:event_btnShopActionPerformed
 
     
     /**
