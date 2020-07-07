@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -30,10 +29,9 @@ public class MainWindow extends javax.swing.JFrame {
     private DBManager dbm = DBManager.getInstance();
     ArrayList<GameStruct> gs = new ArrayList<GameStruct>();
     
-    public ArrayList<Integer> gameQty = new ArrayList<Integer>();
-    public ArrayList<Long> gameIdList = new ArrayList<Long>();
-    public ArrayList<Integer> vouchQty = new ArrayList<Integer>();;
-    public ArrayList<Integer> vouchIdList = new ArrayList<Integer>();
+    // Game purchase variables
+    public boolean isDoTrans = false;
+    public int id_order = -1;
 
     public MainWindow() {
         initComponents();
@@ -90,6 +88,7 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        btnReceipt = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -433,6 +432,18 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        btnReceipt.setBackground(new java.awt.Color(242, 242, 242));
+        btnReceipt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uiassets/fi-xwluxt-file-wide.png"))); // NOI18N
+        btnReceipt.setToolTipText("Make new transaction.");
+        btnReceipt.setFocusable(false);
+        btnReceipt.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnReceipt.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnReceipt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReceiptActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("File");
 
         jMenuItem1.setText("jMenuItem1");
@@ -478,7 +489,9 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 418, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnReceipt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnShop)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnAdd)
@@ -528,7 +541,8 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReceipt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -597,46 +611,53 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSettingActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // Game's tab panel
         if(jTabbedPane1.getSelectedIndex() == 0) {
-            // Game tab
             
-            // Stock validation
-            if(dbm.fetchGameStockCount(gs.get(curIndex).id_game) > Integer.parseInt(jTextField2.getText()) &&
-                    !((Integer)model.getValueAt(curIndex, 3) <= 0)) {
-                model.setValueAt((Integer)model.getValueAt(curIndex, 3) - 1, curIndex, 3);
-                System.out.println("Current stock : " + (Integer)model.getValueAt(curIndex, 3));
+            if(id_order != -1) {
+                // Game's Stock validation
+                if(dbm.fetchGameStockCount(gs.get(curIndex).id_game) - Integer.parseInt(jTextField2.getText()) >= 0 &&
+                        !((Integer)model.getValueAt(curIndex, 3) <= 0)) {
+                    model.setValueAt((Integer)model.getValueAt(curIndex, 3) - Integer.parseInt(jTextField2.getText()), curIndex, 3);
+                    System.out.println("Current stock : " + (Integer)model.getValueAt(curIndex, 3));
+
+                    // Saving to the the table detail_produk
+                    // Also the total price already cut by tax
+                    dbm.saveDetailProduct((Float)model.getValueAt(curIndex, 1) * Integer.parseInt(jTextField2.getText()) - (Float)model.getValueAt(curIndex, 2), Integer.parseInt(jTextField2.getText()), -1, -1, gs.get(curIndex).id_game, id_order);
+                } else {
+                    System.out.println("Stock not enough!");
+                    return;
+                }
             } else {
-                System.out.println("Stock not enough!");
-                return;
+                System.out.println("Press the new transaction button first!");
             }
-            
-            gameQty = gameQty + Integer.parseInt(jTextField2.getText());
-            
-            for(int i = 0; i < Integer.parseInt(jTextField2.getText()); i++)
-                gameIdList.add(gs.get(curIndex).id_game);
-            
-            System.out.println("Current game quantity to be bought : " + String.valueOf(gameQty));
-            System.out.println("Just add game with id : " + gs.get(curIndex).id_game + " to the cart!");
+        // Voucher's tab panel
         } else if(jTabbedPane1.getSelectedIndex() == 1) {
             // Voucher tab
-            vouchQty = vouchQty + 1;
+           
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        gameQty = 0;
-        vouchQty = 0;
-        gameIdList.clear();
-        vouchIdList.clear();
+
         
         System.out.println("All cart cleared!");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnShopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShopActionPerformed
-        new TransWindow(gameIdList, vouchIdList, gameQty, vouchQty).setVisible(true);
+        new TransWindow().setVisible(true);
     }//GEN-LAST:event_btnShopActionPerformed
 
-    
+    private void btnReceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReceiptActionPerformed
+        if(!isDoTrans) {
+            isDoTrans = true;
+            dbm.saveOrder(1);
+            id_order = dbm.fetchLatestOrderID();
+        } else {
+            System.out.println("Already make a transaction! with id : " + dbm.fetchLatestOrderID());
+        }
+    }//GEN-LAST:event_btnReceiptActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -680,6 +701,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnFind;
     private javax.swing.JButton btnLog;
+    private javax.swing.JButton btnReceipt;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSetting;
     private javax.swing.JButton btnShop;

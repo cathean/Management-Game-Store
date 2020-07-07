@@ -81,7 +81,9 @@
                               <Component id="btnSave" min="-2" pref="53" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnCancel" min="-2" pref="52" max="-2" attributes="0"/>
-                              <EmptySpace pref="418" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btnReceipt" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnShop" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
@@ -147,6 +149,7 @@
                   <Component id="btnCancel" alignment="0" max="32767" attributes="0"/>
                   <Component id="btnSave" alignment="0" max="32767" attributes="0"/>
                   <Component id="btnAdd" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="btnReceipt" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -777,5 +780,22 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="btnReceipt">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="f2" green="f2" red="f2" type="rgb"/>
+        </Property>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/uiassets/fi-xwluxt-file-wide.png"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Make new transaction."/>
+        <Property name="focusable" type="boolean" value="false"/>
+        <Property name="horizontalTextPosition" type="int" value="0"/>
+        <Property name="verticalTextPosition" type="int" value="3"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReceiptActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

@@ -192,6 +192,8 @@ public class SaveStockWindow extends javax.swing.JFrame {
         for(int i = 0; i < model.getRowCount(); i++) {
             if(!(model.getValueAt(i, 0) == null)) {
                 code_list.add((String)model.getValueAt(i, 0));
+                
+                System.out.println("The codes are : " + code_list.get(i).toString());
             }
         }
         

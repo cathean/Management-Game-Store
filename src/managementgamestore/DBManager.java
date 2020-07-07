@@ -7,6 +7,8 @@ package managementgamestore;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,6 +65,7 @@ class DBManager {
             Connection conn = DriverManager.getConnection(url, usr, pwd);
             
             System.out.println("Connected database successfully...");   
+            System.out.println("///////////////////////////////////"); 
             return conn;
         } catch (SQLException ex) {
             Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -147,6 +150,184 @@ class DBManager {
         return gs;
     }
     
+    public int fetchLatestOrderID() {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SELECT MAX(id_pesanan) AS id FROM `gamestore`.`pemesanan`";
+        int id = -1;
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            ResultSet rs = preparedStmt.executeQuery();
+            
+            if(rs.next())
+                id = rs.getInt("id");
+            else
+                System.out.println("There's is no latest order!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return id;
+    }
+    
+        public int fetchLatestCustomerID() {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SELECT MAX(id_pembeli) AS id FROM `gamestore`.`pembeli`";
+        int id = -1;
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            ResultSet rs = preparedStmt.executeQuery();
+            
+            if(rs.next())
+                id = rs.getInt("id");
+            else
+                System.out.println("There's is no latest order!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return id;
+    }
+    
+    public Timestamp fetchTimeStampOrderByID(int id_pesanan) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SELECT `tgl_pembelian` FROM `pemesanan` WHERE `id_pesanan`=?";
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setInt(1, id_pesanan);
+            ResultSet rs = preparedStmt.executeQuery();
+            
+            if(rs.next())
+                return rs.getTimestamp("tgl_pembelian");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+    
+    public FinalOrderStruct fetchFinalOrder() {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SELECT `total_harga`, `kuantitas_game`, `kuantitas_voucher`,`id_voucher`, `id_game` "
+                + "FROM `detail_produk` WHERE `id_pesanan`=?";
+        ArrayList<Long> id_gameList = new ArrayList<Long>();
+        ArrayList<Integer> qty_gameList = new ArrayList<Integer>();
+        ArrayList<Integer> id_vouchList = new ArrayList<Integer>();
+        ArrayList<Integer> qty_vouchList = new ArrayList<Integer>();
+        ArrayList<FinalProductStruct> product = new ArrayList<FinalProductStruct>();
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setInt(1, fetchLatestOrderID());
+            ResultSet rs = preparedStmt.executeQuery();
+            
+            while(rs.next()) {
+                // Get integer value from column id_game
+                rs.getInt("id_game");
+                
+                // If it's null do something to voucher
+                if(rs.wasNull()) {
+                    // Manage voucher
+                    id_vouchList.add(rs.getInt("id_voucher"));
+                    qty_vouchList.add(rs.getInt("kuantitas_voucher"));
+                    System.out.println("id : " + id_vouchList.get(id_vouchList.size() - 1) + " / qty : " + qty_vouchList.get(qty_vouchList.size() - 1));
+                } else {
+                    // Manage game
+                    id_gameList.add(rs.getLong("id_game"));
+                    qty_gameList.add(rs.getInt("kuantitas_game"));
+                    System.out.println("id : " + id_gameList.get(id_gameList.size() - 1) + " / qty : " + qty_gameList.get(qty_gameList.size() - 1));
+                }
+            }
+            
+            // Make new query for game
+            for(int i = 0; i < id_gameList.size(); i++) {             
+                query = "SELECT `nama_game`, `harga` FROM `game` WHERE `id_game`=?";
+                preparedStmt = conn.prepareStatement(query);
+
+                preparedStmt.setLong(1, id_gameList.get(i));
+                rs = preparedStmt.executeQuery();
+                
+                if(rs.next()) {
+                    product.add(new FinalProductStruct(rs.getString("nama_game"), qty_gameList.get(i), rs.getFloat("harga"), qty_gameList.get(i) * rs.getFloat("harga")));
+                    System.out.println("Product added! : " + product.get(product.size() - 1).nama_produk);
+                }
+            }
+            
+            // make new query for voucher
+            for(int i = 0; i < id_vouchList.size(); i++) {             
+                query = "SELECT `jenis_game`, `harga` FROM `voucher` WHERE `id_voucher`=?";
+                preparedStmt = conn.prepareStatement(query);
+
+                preparedStmt.setInt(1, id_vouchList.get(i));
+                rs = preparedStmt.executeQuery();
+                
+                if(rs.next()) {
+                    product.add(new FinalProductStruct(rs.getString("jenis_game"), qty_vouchList.get(i), rs.getFloat("harga"), qty_vouchList.get(i) * rs.getFloat("harga")));
+                }
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        float totalHarga = 0;
+        
+        for(int i = 0; i < product.size(); i++) {
+            totalHarga = totalHarga + product.get(i).total;
+        }
+        
+        return new FinalOrderStruct(fetchLatestOrderID(), 
+                fetchTimeStampOrderByID(fetchLatestOrderID()),
+                totalHarga,
+                product);
+    }
+    
+    public String[] fetchPaymentMethod() {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SELECT `jenis` FROM `jenis_pembayaran`";
+        ArrayList<String> payList = new ArrayList<String>();
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            ResultSet rs = preparedStmt.executeQuery();
+            
+            while(rs.next()) {
+                payList.add(rs.getString("jenis"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return payList.toArray(new String[payList.size()]);
+    }
+    
+    public int fetchPaymentMethodID(String jenis) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SSELECT `id_pembayaran` FROM `jenis_pembayaran` WHERE `jenis`=?";
+        int id_pembayaran = -1;
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setString(1, jenis);
+            ResultSet rs = preparedStmt.executeQuery();
+            
+            if(rs.next()) {
+                id_pembayaran = rs.getInt("id_pembayaran");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return id_pembayaran;
+    }
+    
+    
+    
     public void saveGameData(long id_game, float harga, String nama, String deskripsi, String genre, String platform, float pajak, String url) {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query =
@@ -184,21 +365,20 @@ class DBManager {
                 preparedStmt.setString(1, game_code.get(i));
                 preparedStmt.setLong(2, id_game);
                 
-                preparedStmt.addBatch();
+                preparedStmt.execute();
             }
             
-            preparedStmt.execute();
             System.out.println("Succesfully save it into the game_code table!");
         } catch (SQLException ex) {
             Logger.getLogger(SaveStockWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void saveDetailProduct(float harga, int kuantitas_game, int kuantitas_voucher, int id_voucher, int id_game) {
+    public void saveDetailProduct(float harga, int kuantitas_game, int kuantitas_voucher, int id_voucher, long id_game, int id_pesanan) {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query = "INSERT INTO `gamestore`.`detail_produk` "
-                + "(`total_harga`, `kuantitas_game`, `kuantitas_voucher`, `id_voucher`, `id_game`) "
-                + "VALUES (?, ?, ?, ?, ?)";
+                + "(`total_harga`, `kuantitas_game`, `kuantitas_voucher`, `id_voucher`, `id_game`, `id_pesanan`) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
         
         try { 
             PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -216,17 +396,72 @@ class DBManager {
                 preparedStmt.setNull(3, Types.INTEGER);
                         
             if(id_voucher != -1) 
-                preparedStmt.setInt(3, kuantitas_voucher); 
+                preparedStmt.setInt(4, id_voucher); 
             else 
-                preparedStmt.setNull(3, Types.INTEGER);
+                preparedStmt.setNull(4, Types.INTEGER);
                         
             if(id_game != -1) 
-                preparedStmt.setInt(3, kuantitas_voucher); 
+                preparedStmt.setLong(5, id_game); 
             else 
-                preparedStmt.setNull(3, Types.INTEGER);
+                preparedStmt.setNull(5, Types.INTEGER);
+            
+            preparedStmt.setInt(6, id_pesanan);
             
             preparedStmt.execute();
             System.out.println("Succesfully save it into the detail_produk table!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void saveOrder(int id_admin) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "INSERT INTO `gamestore`.`pemesanan` (`tgl_pembelian`, `id_admin`) VALUES (?, ?)";
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setInt(2, id_admin);
+            preparedStmt.execute();
+            System.out.println("Succesfully save it into the pemesanan table!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void saveCustomer(String nama, String email, int id_pembayaran) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "INSERT INTO `gamestore`.`pembeli` "
+                + "(`nama`, `email`, `id_pembayaran`) "
+                + "VALUES (?, ?, ?)";
+        
+         try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setString(1, nama);
+            preparedStmt.setString(2, email);
+            preparedStmt.setInt(3, id_pembayaran);
+            preparedStmt.execute();
+            System.out.println("Succesfully save it into the pembeli table!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }       
+    }
+    
+    public void updateOrder(float jumlah_harga, int id_pembeli, int id_pesanan) {
+        try {
+            Connection conn = this.getConnection(usr, pwd, host, db);
+            String query = "UPDATE `gamestore`.`pemesanan` "
+                    + "SET `jumlah_harga`=?, `id_pembeli`=?"
+                    + "WHERE `id_pesanan`=?";
+            
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setFloat(1, jumlah_harga);
+            preparedStmt.setInt(2, id_pembeli);
+            preparedStmt.setInt(3, id_pesanan);
+            ResultSet rs = preparedStmt.executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
         }
