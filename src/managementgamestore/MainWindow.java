@@ -14,6 +14,9 @@ import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -185,11 +188,11 @@ public class MainWindow extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Payment Type", "No. Account", "Tax"
+                "Payment Type", "No. Account"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Float.class
+                java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -254,6 +257,11 @@ public class MainWindow extends javax.swing.JFrame {
         btnUser.setFocusable(false);
         btnUser.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnUser.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUserActionPerformed(evt);
+            }
+        });
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -292,6 +300,11 @@ public class MainWindow extends javax.swing.JFrame {
         btnLog.setFocusable(false);
         btnLog.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnLog.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogActionPerformed(evt);
+            }
+        });
 
         btnDiscount.setBackground(new java.awt.Color(242, 242, 242));
         btnDiscount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uiassets/fi-xwluxt-percent-wide.png"))); // NOI18N
@@ -567,6 +580,38 @@ public class MainWindow extends javax.swing.JFrame {
                     gs.get(i).pajak, 
                     dbm.fetchGameStockCount(gs.get(i).id_game)});
         }
+        
+        jTabbedPane1.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent ce) {
+                if (ce.getSource() instanceof JTabbedPane) {
+                            JTabbedPane pane = (JTabbedPane) ce.getSource();
+                            System.out.println("Selected paneNo : " + pane.getSelectedIndex());
+                            
+                            // If tab pane is in 1, hide unnecessary things.
+                            if(pane.getSelectedIndex() != 0) {
+                                jLabel5.setEnabled(false);
+                                jLabel12.setEnabled(false);
+                                jLabel4.setEnabled(false);
+                                jLabel13.setEnabled(false);
+                                jComboBox1.setEnabled(false);
+                                jComboBox3.setEnabled(false);
+                                jTextField2.setEnabled(false);
+                                jTextArea1.setEnabled(false);
+                            } else {
+                                jLabel5.setEnabled(true);
+                                jLabel12.setEnabled(true);
+                                jLabel4.setEnabled(true);
+                                jLabel13.setEnabled(true);
+                                jComboBox1.setEnabled(true);
+                                jComboBox3.setEnabled(true);
+                                jTextField2.setEnabled(true);
+                                jTextArea1.setEnabled(true);
+                            }
+                }
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
     }
     
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -657,6 +702,14 @@ public class MainWindow extends javax.swing.JFrame {
             System.out.println("Already make a transaction! with id : " + dbm.fetchLatestOrderID());
         }
     }//GEN-LAST:event_btnReceiptActionPerformed
+
+    private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
+        new UserWindow().setVisible(true);
+    }//GEN-LAST:event_btnUserActionPerformed
+
+    private void btnLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogActionPerformed
+        new TransLog().setVisible(true);
+    }//GEN-LAST:event_btnLogActionPerformed
 
     /**
      * @param args the command line arguments

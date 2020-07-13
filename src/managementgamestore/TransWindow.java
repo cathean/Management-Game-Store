@@ -18,11 +18,11 @@ import javax.swing.table.DefaultTableModel;
 public class TransWindow extends javax.swing.JFrame {
     DefaultTableModel model = null;
     DBManager dbm = DBManager.getInstance();
+    FinalOrderStruct finalOrder = dbm.fetchFinalOrder();
 
     public TransWindow() {
         initComponents();
         model = (DefaultTableModel)jTable1.getModel();
-        FinalOrderStruct finalOrder = dbm.fetchFinalOrder();
         
         jLabel10.setText(String.valueOf(finalOrder.id_pesanan));
         jLabel7.setText(finalOrder.tgl_pembelian.toString());
@@ -250,7 +250,12 @@ public class TransWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // Save customer data to the table
         dbm.saveCustomer(jTextField1.getText(), jTextField2.getText(), dbm.fetchPaymentMethodID(jComboBox1.getSelectedItem().toString()));
+        // Update the order transactio in the table
+        dbm.updateOrder(finalOrder.totalSemuaHarga, dbm.fetchLatestCustomerID(), finalOrder.id_pesanan);
+        
+        // Send Message of the code key to the email
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

@@ -22,6 +22,7 @@ class DBManager {
     public static String pwd = "";
     public static String host = "localhost";
     public static String db = "gamestore";
+    public static UserStruct admin = null;
     
     // These below are singleton application
     private static DBManager dbm;
@@ -150,6 +151,31 @@ class DBManager {
         return gs;
     }
     
+    public ArrayList<UserStruct> fetchAdmin() {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SELECT * FROM `gamestore`.`admin`";
+        ArrayList<UserStruct> adminList = new ArrayList<UserStruct>();
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            ResultSet rs = preparedStmt.executeQuery();
+            
+            while(rs.next()) {
+                adminList.add(new UserStruct(
+                        rs.getInt("id_admin"), 
+                        rs.getString("Nama"), 
+                        rs.getString("Kontak"), 
+                        rs.getString("username"), 
+                        rs.getString("password"), 
+                        rs.getString("tipe")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return adminList;
+    }
+    
     public int fetchLatestOrderID() {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query = "SELECT MAX(id_pesanan) AS id FROM `gamestore`.`pemesanan`";
@@ -182,7 +208,7 @@ class DBManager {
             if(rs.next())
                 id = rs.getInt("id");
             else
-                System.out.println("There's is no latest order!");
+                System.out.println("There's is no latest customer!");
         } catch (SQLException ex) {
             Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -307,7 +333,7 @@ class DBManager {
     
     public int fetchPaymentMethodID(String jenis) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "SSELECT `id_pembayaran` FROM `jenis_pembayaran` WHERE `jenis`=?";
+        String query = "SELECT `id_pembayaran` FROM `jenis_pembayaran` WHERE `jenis`=?";
         int id_pembayaran = -1;
         
         try {
@@ -449,19 +475,84 @@ class DBManager {
         }       
     }
     
-    public void updateOrder(float jumlah_harga, int id_pembeli, int id_pesanan) {
+    public void saveAdmin(String nama, String kontak, String username, String password, String tipe) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "INSERT INTO `gamestore`.`admin` "
+                + "(`Nama`, `Kontak`, `username`, `password`, `tipe`) "
+                + "VALUES (?, ?, ?, ?, ?)";
+        
         try {
-            Connection conn = this.getConnection(usr, pwd, host, db);
-            String query = "UPDATE `gamestore`.`pemesanan` "
-                    + "SET `jumlah_harga`=?, `id_pembeli`=?"
-                    + "WHERE `id_pesanan`=?";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
             
+            preparedStmt.setString(1, nama);
+            preparedStmt.setString(2, kontak);
+            preparedStmt.setString(3, username);
+            preparedStmt.setString(4, password);
+            preparedStmt.setString(5, tipe);
+            preparedStmt.execute();
+            System.out.println("Succesfully save it into the admin table!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updateOrder(float jumlah_harga, int id_pembeli, int id_pesanan) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "UPDATE `gamestore`.`pemesanan` SET `jumlah_harga` = ? , `id_pembeli` = ? WHERE `id_pesanan` = ?";
+        try {
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             
             preparedStmt.setFloat(1, jumlah_harga);
             preparedStmt.setInt(2, id_pembeli);
             preparedStmt.setInt(3, id_pesanan);
+            preparedStmt.execute();
+            System.out.println("Order updated!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void revealGameCode(long id_game, int qty) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SELECT `id_game_code`, `game_code` FROM `game_code` WHERE `id_game`=? LIMIT ?";
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setLong(1, id_game);
+            preparedStmt.setInt(2, qty);
             ResultSet rs = preparedStmt.executeQuery();
+            
+            while(rs.next()) {
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void login(String username, String pass) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SELECT * FROM `gamestore`.`admin` WHERE username=? AND PASSWORD=?";
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setString(1, username);
+            preparedStmt.setString(2, pass);
+            ResultSet rs = preparedStmt.executeQuery();
+            
+            if(rs.next()) {
+                System.out.println("Login Succcess!");
+                admin = new UserStruct(
+                        rs.getInt("id_admin"), 
+                        rs.getString("Nama"), 
+                        rs.getString("Kontak"), 
+                        rs.getString("username"), 
+                        rs.getString("password"), 
+                        rs.getString("tipe"));
+            } else
+                System.out.println("Login Failed!");
         } catch (SQLException ex) {
             Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
         }
