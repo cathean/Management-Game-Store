@@ -22,7 +22,7 @@ class DBManager {
     public static String pwd = "";
     public static String host = "localhost";
     public static String db = "gamestore";
-    public static UserStruct admin = null;
+    public static UserStruct admin;
     
     // These below are singleton application
     private static DBManager dbm;
@@ -130,7 +130,6 @@ class DBManager {
         
         try {
             PreparedStatement preparedStmt = conn.prepareStatement(query);
-            
             ResultSet rs = preparedStmt.executeQuery();
             
             while(rs.next()) {
@@ -237,12 +236,10 @@ class DBManager {
     
     public FinalOrderStruct fetchFinalOrder() {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "SELECT `total_harga`, `kuantitas_game`, `kuantitas_voucher`,`id_voucher`, `id_game` "
+        String query = "SELECT `total_harga`, `kuantitas_game`, `id_game` "
                 + "FROM `detail_produk` WHERE `id_pesanan`=?";
         ArrayList<Long> id_gameList = new ArrayList<Long>();
         ArrayList<Integer> qty_gameList = new ArrayList<Integer>();
-        ArrayList<Integer> id_vouchList = new ArrayList<Integer>();
-        ArrayList<Integer> qty_vouchList = new ArrayList<Integer>();
         ArrayList<FinalProductStruct> product = new ArrayList<FinalProductStruct>();
         
         try {
@@ -252,21 +249,10 @@ class DBManager {
             ResultSet rs = preparedStmt.executeQuery();
             
             while(rs.next()) {
-                // Get integer value from column id_game
-                rs.getInt("id_game");
-                
-                // If it's null do something to voucher
-                if(rs.wasNull()) {
-                    // Manage voucher
-                    id_vouchList.add(rs.getInt("id_voucher"));
-                    qty_vouchList.add(rs.getInt("kuantitas_voucher"));
-                    System.out.println("id : " + id_vouchList.get(id_vouchList.size() - 1) + " / qty : " + qty_vouchList.get(qty_vouchList.size() - 1));
-                } else {
-                    // Manage game
-                    id_gameList.add(rs.getLong("id_game"));
-                    qty_gameList.add(rs.getInt("kuantitas_game"));
-                    System.out.println("id : " + id_gameList.get(id_gameList.size() - 1) + " / qty : " + qty_gameList.get(qty_gameList.size() - 1));
-                }
+                // Manage game
+                id_gameList.add(rs.getLong("id_game"));
+                qty_gameList.add(rs.getInt("kuantitas_game"));
+                System.out.println("id : " + id_gameList.get(id_gameList.size() - 1) + " / qty : " + qty_gameList.get(qty_gameList.size() - 1));
             }
             
             // Make new query for game
@@ -281,21 +267,7 @@ class DBManager {
                     product.add(new FinalProductStruct(rs.getString("nama_game"), qty_gameList.get(i), rs.getFloat("harga"), qty_gameList.get(i) * rs.getFloat("harga")));
                     System.out.println("Product added! : " + product.get(product.size() - 1).nama_produk);
                 }
-            }
-            
-            // make new query for voucher
-            for(int i = 0; i < id_vouchList.size(); i++) {             
-                query = "SELECT `jenis_game`, `harga` FROM `voucher` WHERE `id_voucher`=?";
-                preparedStmt = conn.prepareStatement(query);
-
-                preparedStmt.setInt(1, id_vouchList.get(i));
-                rs = preparedStmt.executeQuery();
-                
-                if(rs.next()) {
-                    product.add(new FinalProductStruct(rs.getString("jenis_game"), qty_vouchList.get(i), rs.getFloat("harga"), qty_vouchList.get(i) * rs.getFloat("harga")));
-                }
-            }
-            
+            } 
         } catch (SQLException ex) {
             Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -352,7 +324,53 @@ class DBManager {
         return id_pembayaran;
     }
     
+    public ArrayList<PaymentStruct> fetchPaymentMethodList() {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SELECT * FROM `jenis_pembayaran`";
+        ArrayList<PaymentStruct> ps = new ArrayList<PaymentStruct>();
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            ResultSet rs = preparedStmt.executeQuery();
+            
+            while(rs.next()) {
+                ps.add(new PaymentStruct(rs.getInt("id_pembayaran"), rs.getString("jenis"), rs.getString("no_rek")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return ps;
+    }
     
+    public ArrayList<TransStruct> fetchTransLog() {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SELECT * FROM `pemesanan`";
+        ArrayList<TransStruct> ts = new ArrayList<TransStruct>();
+        
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            ResultSet rs = preparedStmt.executeQuery();
+            
+            while(rs.next()) {
+                ts.add(new TransStruct(rs.getInt("id_pesanan"),
+                        rs.getTimestamp("tgl_pembelian").toString(), 
+                        rs.getString("nama_pembeli"), 
+                        rs.getString("email"), 
+                        rs.getString("nama_karyawan"), 
+                        rs.getFloat("jumlah_harga"), 
+                        rs.getString("metode"), 
+                        rs.getString("status"), 
+                        rs.getInt("id_admin"), 
+                        rs.getInt("id_pembeli")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return ts;
+    }
     
     public void saveGameData(long id_game, float harga, String nama, String deskripsi, String genre, String platform, float pajak, String url) {
         Connection conn = this.getConnection(usr, pwd, host, db);
@@ -400,11 +418,11 @@ class DBManager {
         }
     }
     
-    public void saveDetailProduct(float harga, int kuantitas_game, int kuantitas_voucher, int id_voucher, long id_game, int id_pesanan) {
+    public void saveDetailProduct(float harga, int kuantitas_game, long id_game, int id_pesanan) {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query = "INSERT INTO `gamestore`.`detail_produk` "
-                + "(`total_harga`, `kuantitas_game`, `kuantitas_voucher`, `id_voucher`, `id_game`, `id_pesanan`) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+                + "(`total_harga`, `kuantitas_game`, `id_game`, `id_pesanan`) "
+                + "VALUES (?, ?, ?, ?)";
         
         try { 
             PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -415,23 +433,13 @@ class DBManager {
                 preparedStmt.setInt(2, kuantitas_game); 
             else 
                 preparedStmt.setNull(2, Types.INTEGER);
-            
-            if(kuantitas_voucher != -1) 
-                preparedStmt.setInt(3, kuantitas_voucher); 
-            else 
-                preparedStmt.setNull(3, Types.INTEGER);
-                        
-            if(id_voucher != -1) 
-                preparedStmt.setInt(4, id_voucher); 
-            else 
-                preparedStmt.setNull(4, Types.INTEGER);
                         
             if(id_game != -1) 
-                preparedStmt.setLong(5, id_game); 
+                preparedStmt.setLong(3, id_game); 
             else 
-                preparedStmt.setNull(5, Types.INTEGER);
+                preparedStmt.setNull(3, Types.INTEGER);
             
-            preparedStmt.setInt(6, id_pesanan);
+            preparedStmt.setInt(4, id_pesanan);
             
             preparedStmt.execute();
             System.out.println("Succesfully save it into the detail_produk table!");
@@ -442,13 +450,17 @@ class DBManager {
     
     public void saveOrder(int id_admin) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "INSERT INTO `gamestore`.`pemesanan` (`tgl_pembelian`, `id_admin`) VALUES (?, ?)";
+        String query = "INSERT INTO `gamestore`.`pemesanan` "
+                + "(`tgl_pembelian`, `nama_karyawan`, `status`, `id_admin`) "
+                + "VALUES (?, ?, ?, ?); ";
         
         try {
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             
             preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
-            preparedStmt.setInt(2, id_admin);
+            preparedStmt.setString(2, this.admin.name);
+            preparedStmt.setString(3, "ONGOING");
+            preparedStmt.setInt(4, id_admin);
             preparedStmt.execute();
             System.out.println("Succesfully save it into the pemesanan table!");
         } catch (SQLException ex) {
@@ -496,15 +508,38 @@ class DBManager {
         }
     }
     
-    public void updateOrder(float jumlah_harga, int id_pembeli, int id_pesanan) {
+    public void delDetailProduct(int id_pesanan) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "UPDATE `gamestore`.`pemesanan` SET `jumlah_harga` = ? , `id_pembeli` = ? WHERE `id_pesanan` = ?";
+        String query = "DELETE FROM `gamestore`.`detail_produk` WHERE `id_pesanan` = ?";
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setInt(1, id_pesanan);
+            preparedStmt.execute();
+            System.out.println("Succesfully deleted rows in detail_produk");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updateOrder(String nama_pembeli, String email, float jumlah_harga, String metode, int id_pembeli, int id_pesanan) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "UPDATE `gamestore`.`pemesanan` SET "
+                + "`nama_pembeli` = ? , "
+                + "`email` = ? , "
+                + "`jumlah_harga` = ? , "
+                + "`metode` = ? , "
+                + "`status` = 'DONE' , "
+                + "`id_pembeli` = ? "
+                + "WHERE `id_pesanan` = ?; ";
         try {
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             
-            preparedStmt.setFloat(1, jumlah_harga);
-            preparedStmt.setInt(2, id_pembeli);
-            preparedStmt.setInt(3, id_pesanan);
+            preparedStmt.setString(1, nama_pembeli);
+            preparedStmt.setString(2, email);
+            preparedStmt.setFloat(3, jumlah_harga);
+            preparedStmt.setString(4, metode);
+            preparedStmt.setInt(5, id_pembeli);
+            preparedStmt.setInt(6, id_pesanan);
             preparedStmt.execute();
             System.out.println("Order updated!");
         } catch (SQLException ex) {

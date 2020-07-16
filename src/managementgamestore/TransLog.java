@@ -6,19 +6,36 @@
 package managementgamestore;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import java.util.ArrayList;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Lenovo
  */
 public class TransLog extends javax.swing.JFrame {
-
+    private DefaultTableModel model = null;
+    private DBManager dbm = DBManager.getInstance();
     /**
      * Creates new form TransLog
      */
     public TransLog() {
         initComponents();
+        model = (DefaultTableModel) jTable1.getModel();
+        ArrayList<TransStruct> ts = dbm.fetchTransLog();
+        
+        for(int i = 0; i < ts.size(); i++) {
+            model.addRow(new Object[] {
+                ts.get(i).id_pesanan,
+                ts.get(i).tgl_pembelian,
+                ts.get(i).nama_pembeli,
+                ts.get(i).email,
+                ts.get(i).nama_karyawan,
+                ts.get(i).jumlah,
+                ts.get(i).metode,
+                ts.get(i).status});
+        }
     }
 
     /**
@@ -34,25 +51,22 @@ public class TransLog extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Transaction Log");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID Pesanan", "Tanggal Pembelian", "Jumlah Harga", "ID Pembeli", "ID Detail Produk", "ID Admin"
+                "No. Order", "Date", "Customer", "Email", "Employee", "Payment", "Method", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
+                false, true, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {

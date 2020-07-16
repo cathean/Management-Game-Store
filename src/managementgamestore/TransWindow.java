@@ -253,7 +253,7 @@ public class TransWindow extends javax.swing.JFrame {
         // Save customer data to the table
         dbm.saveCustomer(jTextField1.getText(), jTextField2.getText(), dbm.fetchPaymentMethodID(jComboBox1.getSelectedItem().toString()));
         // Update the order transactio in the table
-        dbm.updateOrder(finalOrder.totalSemuaHarga, dbm.fetchLatestCustomerID(), finalOrder.id_pesanan);
+        dbm.updateOrder(jTextField1.getText(), jTextField2.getText(), finalOrder.totalSemuaHarga, jComboBox1.getSelectedItem().toString(), dbm.fetchLatestCustomerID(), finalOrder.id_pesanan);
         
         // Send Message of the code key to the email
     }//GEN-LAST:event_jButton1ActionPerformed

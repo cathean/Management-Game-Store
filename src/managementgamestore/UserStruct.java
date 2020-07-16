@@ -15,7 +15,7 @@ class UserStruct {
         this.tipe = tipe;
     }
     
-    int id_admin;
+    int id_admin = 1;
     String name;
     String kontak;
     String username;

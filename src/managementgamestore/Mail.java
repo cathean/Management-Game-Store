@@ -17,57 +17,25 @@ import javax.mail.Transport;
  */
 public class Mail {
     public static void main(String[] args) {
-        // Recipient's email ID needs to be mentioned.
-        String to = "ivan.ongko.s@gmail.com";
+        java.util.Properties props = new java.util.Properties();
+        props.put("mail.smtp.host", "smtp.myisp.com");
+        Session session = Session.getDefaultInstance(props, null);
 
-        // Sender's email ID needs to be mentioned
-        String from = "ivan.ongko.s@gmail.com";
-        final String username = "ivan.ongko.s";//change accordingly
-        final String password = "comforteagle";//change accordingly
-
-        // Assuming you are sending email through relay.jangosmtp.net
-        String host = "smtp.gmail.com";
-
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", "465");
-
-        // Get the Session object.
-        Session session = Session.getInstance(props,
-        new javax.mail.Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-               return new PasswordAuthentication(username, password);
-            }
-        });
-
+        // Construct the message
+        String to = "devourandeat@gmail.com";
+        String from = "devourandeat@gmail.com";
+        String subject = "Hello";
+        Message msg = new MimeMessage(session);
         try {
-            // Create a default MimeMessage object.
-            Message message = new MimeMessage(session);
+            msg.setFrom(new InternetAddress(from));
+            msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            msg.setSubject(subject);
+            msg.setText("Hi,\n\nHow are you?");
 
-            // Set From: header field of the header.
-            message.setFrom(new InternetAddress(from));
-
-            // Set To: header field of the header.
-            message.setRecipients(Message.RecipientType.TO,
-               InternetAddress.parse(to));
-
-            // Set Subject: header field
-            message.setSubject("Testing Subject");
-
-            // Now set the actual message
-            message.setText("Hello, this is sample for to check send " +
-                "email using JavaMailAPI ");
-
-            // Send message
-            Transport.send(message);
-
-            System.out.println("Sent message successfully....");
-
+            // Send the message.
+            Transport.send(msg);
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            // Error.
         }
     }
 }

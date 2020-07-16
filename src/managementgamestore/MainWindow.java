@@ -1,6 +1,7 @@
 package managementgamestore;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.Component;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Image;
@@ -26,11 +27,13 @@ public class MainWindow extends javax.swing.JFrame {
     private Image image = null;
     private ImageIcon imageIcon = new ImageIcon();
     private JLabel imageLabel = new JLabel();
-    private DefaultTableModel model = null;
+    private DefaultTableModel model1 = null;
+    private DefaultTableModel model2 = null;
     private int curIndex = -1;
     private int lastIndex = -1;
     private DBManager dbm = DBManager.getInstance();
     ArrayList<GameStruct> gs = new ArrayList<GameStruct>();
+    ArrayList<PaymentStruct> ps = new ArrayList<PaymentStruct>();
     
     // Game purchase variables
     public boolean isDoTrans = false;
@@ -54,18 +57,12 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
         btnDelete = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnShop = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        btnFind = new javax.swing.JButton();
         btnUser = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -146,43 +143,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Game Stock", jPanel1);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Game Title", "Quantity Voucher", "Price"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Float.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jTable2.getTableHeader().setResizingAllowed(false);
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable2);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 628, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 369, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Voucher Stock", jPanel2);
-
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -245,11 +205,6 @@ public class MainWindow extends javax.swing.JFrame {
                 btnShopActionPerformed(evt);
             }
         });
-
-        jLabel1.setText("Search : ");
-
-        btnFind.setBackground(new java.awt.Color(242, 242, 242));
-        btnFind.setText("Find");
 
         btnUser.setBackground(new java.awt.Color(242, 242, 242));
         btnUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uiassets/fi-xnsuxt-key-alt-solid.png"))); // NOI18N
@@ -476,24 +431,6 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnLog)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDiscount)
-                        .addGap(6, 6, 6)
-                        .addComponent(btnUser)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSetting)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnVer)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnFind))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -516,19 +453,27 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 633, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(4, 4, 4)))
+                        .addGap(10, 10, 10))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jSeparator1)
+                        .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLog)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDiscount)
+                .addGap(6, 6, 6)
+                .addComponent(btnUser)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSetting)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnVer)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(btnFind)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -562,10 +507,23 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+    public void refreshGameTable() {
+        model1.setRowCount(0);
+        
+        for(int i = 0; i < gs.size(); i++) {
+        model1.addRow(new Object[] {
+            gs.get(i).nama_game,
+            gs.get(i).harga,
+            gs.get(i).pajak, 
+            dbm.fetchGameStockCount(gs.get(i).id_game)});
+        }
+    }
+    
     public void InitOtherComponent() {
         //jTable1.getColumn("Details").setCellRenderer(new CustomTableRenderer().new ButtonRenderer());
         //jTable1.getColumn("Details").setCellEditor(new CustomTableRenderer().new ButtonEditor(new JCheckBox()));
-        model = (DefaultTableModel) jTable1.getModel();
+        model1 = (DefaultTableModel) jTable1.getModel();
+        model2 = (DefaultTableModel) jTable3.getModel();
         jTextArea1.setLineWrap(true);
         
         // Use ram cache for image IO
@@ -574,11 +532,13 @@ public class MainWindow extends javax.swing.JFrame {
         // Load list of game and display it in table
         gs = dbm.fetchGameStock();
         
-        for(int i = 0; i < gs.size(); i++) {
-            model.addRow(new Object[] {gs.get(i).nama_game,
-                    gs.get(i).harga,
-                    gs.get(i).pajak, 
-                    dbm.fetchGameStockCount(gs.get(i).id_game)});
+        refreshGameTable();
+        
+        // Load list of payment method
+        ps = dbm.fetchPaymentMethodList();
+        
+        for(int i = 0; i < ps.size(); i++) {
+            model2.addRow(new Object[] {ps.get(i).jenis, ps.get(i).no_rek});
         }
         
         jTabbedPane1.addChangeListener(new ChangeListener() {
@@ -590,23 +550,11 @@ public class MainWindow extends javax.swing.JFrame {
                             
                             // If tab pane is in 1, hide unnecessary things.
                             if(pane.getSelectedIndex() != 0) {
-                                jLabel5.setEnabled(false);
-                                jLabel12.setEnabled(false);
-                                jLabel4.setEnabled(false);
-                                jLabel13.setEnabled(false);
-                                jComboBox1.setEnabled(false);
-                                jComboBox3.setEnabled(false);
-                                jTextField2.setEnabled(false);
-                                jTextArea1.setEnabled(false);
+                                for (Component cp : jPanel5.getComponents())
+                                    cp.setEnabled(false);
                             } else {
-                                jLabel5.setEnabled(true);
-                                jLabel12.setEnabled(true);
-                                jLabel4.setEnabled(true);
-                                jLabel13.setEnabled(true);
-                                jComboBox1.setEnabled(true);
-                                jComboBox3.setEnabled(true);
-                                jTextField2.setEnabled(true);
-                                jTextArea1.setEnabled(true);
+                                for (Component cp : jPanel5.getComponents())
+                                    cp.setEnabled(true);
                             }
                 }
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -644,7 +592,11 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        new AddGameWindow().setVisible(true);
+        if(jTabbedPane1.getSelectedIndex() == 0)
+            new AddGameWindow().setVisible(true);
+        else if(jTabbedPane1.getSelectedIndex() == 1)
+            System.out.println();
+            //new SaveStockVouchWindow(curIndex).setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerActionPerformed
@@ -662,13 +614,13 @@ public class MainWindow extends javax.swing.JFrame {
             if(id_order != -1) {
                 // Game's Stock validation
                 if(dbm.fetchGameStockCount(gs.get(curIndex).id_game) - Integer.parseInt(jTextField2.getText()) >= 0 &&
-                        !((Integer)model.getValueAt(curIndex, 3) <= 0)) {
-                    model.setValueAt((Integer)model.getValueAt(curIndex, 3) - Integer.parseInt(jTextField2.getText()), curIndex, 3);
-                    System.out.println("Current stock : " + (Integer)model.getValueAt(curIndex, 3));
+                        !((Integer)model1.getValueAt(curIndex, 3) <= 0)) {
+                    model1.setValueAt((Integer)model1.getValueAt(curIndex, 3) - Integer.parseInt(jTextField2.getText()), curIndex, 3);
+                    System.out.println("Current stock : " + (Integer)model1.getValueAt(curIndex, 3));
 
                     // Saving to the the table detail_produk
                     // Also the total price already cut by tax
-                    dbm.saveDetailProduct((Float)model.getValueAt(curIndex, 1) * Integer.parseInt(jTextField2.getText()) - (Float)model.getValueAt(curIndex, 2), Integer.parseInt(jTextField2.getText()), -1, -1, gs.get(curIndex).id_game, id_order);
+                    dbm.saveDetailProduct((Float)model1.getValueAt(curIndex, 1) * Integer.parseInt(jTextField2.getText()) - (Float)model1.getValueAt(curIndex, 2), Integer.parseInt(jTextField2.getText()), gs.get(curIndex).id_game, id_order);
                 } else {
                     System.out.println("Stock not enough!");
                     return;
@@ -676,15 +628,18 @@ public class MainWindow extends javax.swing.JFrame {
             } else {
                 System.out.println("Press the new transaction button first!");
             }
-        // Voucher's tab panel
+        // Payment method's tab panel
         } else if(jTabbedPane1.getSelectedIndex() == 1) {
-            // Voucher tab
            
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
+        
+        if(id_order != -1) {
+            dbm.delDetailProduct(id_order);
+            refreshGameTable();
+        }
         
         System.out.println("All cart cleared!");
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -752,7 +707,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnDiscount;
     private javax.swing.JButton btnEdit;
-    private javax.swing.JButton btnFind;
     private javax.swing.JButton btnLog;
     private javax.swing.JButton btnReceipt;
     private javax.swing.JButton btnSave;
@@ -764,7 +718,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
@@ -776,22 +729,18 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
