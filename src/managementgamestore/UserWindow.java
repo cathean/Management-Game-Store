@@ -342,6 +342,9 @@ public class UserWindow extends javax.swing.JFrame {
                 jTextField2.getText(), 
                 new String(jPasswordField1.getPassword()), 
                 tipe);
+        
+        adminList = dbm.fetchAdmin();
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
