@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static org.mentaregex.Regex.match;
 
@@ -188,7 +189,7 @@ public class SaveStockWindow extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         ArrayList<String> code_list = new ArrayList<String>();
-        
+        JOptionPane.showMessageDialog(null, "Game berhasil ditambahkan", "Message",JOptionPane.INFORMATION_MESSAGE);
         for(int i = 0; i < model.getRowCount(); i++) {
             if(!(model.getValueAt(i, 0) == null)) {
                 code_list.add((String)model.getValueAt(i, 0));
