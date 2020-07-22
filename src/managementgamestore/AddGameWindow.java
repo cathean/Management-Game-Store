@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -59,7 +60,6 @@ public class AddGameWindow extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -73,6 +73,8 @@ public class AddGameWindow extends javax.swing.JFrame {
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox<>();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add Game");
@@ -136,11 +138,7 @@ public class AddGameWindow extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Search Information"));
 
-        jProgressBar1.setValue(50);
-
-        jLabel1.setText("Search result : ");
-
-        jLabel3.setText("0");
+        jLabel1.setText("Hasil pencarian : 0");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -150,17 +148,13 @@ public class AddGameWindow extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3))
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -247,6 +241,16 @@ public class AddGameWindow extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jMenu1.setText("Help");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -310,9 +314,12 @@ public class AddGameWindow extends javax.swing.JFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
+            jLabel1.setText("Memuat...");
+            jProgressBar1.setValue(0);
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             String title = java.net.URLEncoder.encode(jTextField1.getText(), "UTF-8").replace("+", "%20");
             
+            jProgressBar1.setValue(20);
             System.out.println(title);
             deleteAllRows();
             GameAPIRequest.doClean();
@@ -329,11 +336,15 @@ public class AddGameWindow extends javax.swing.JFrame {
                     model.addRow(item);
                 }
             }
+            
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(AddGameWindow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AddGameWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
+    jProgressBar1.setValue(100);
+    int row = jTable1.getRowCount();
+    jLabel1.setText("Hasil pencarian : "+row);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -341,6 +352,7 @@ public class AddGameWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+
         curIndex = jTable1.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         
@@ -354,7 +366,7 @@ public class AddGameWindow extends javax.swing.JFrame {
         jTextArea1.setText("");
         URL url;
         try {
-            // Need validation if image is exist or not
+            // Need validation if image is exist or not     
             url = new URL(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").get("image").getAsString());
             image = ImageIO.read(url).getScaledInstance(160, 225, Image.SCALE_SMOOTH);
             
@@ -364,10 +376,13 @@ public class AddGameWindow extends javax.swing.JFrame {
             jComboBox3.setModel(new DefaultComboBoxModel(GameUtils.JArrayToArray(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").getAsJsonArray("genre"))));
             jTextArea1.setText(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").get("description").getAsString());
             jLabel7.setText(String.valueOf(GameAPIRequest.infoGameResults.get(curIndex).getAsJsonObject("result").get("score").getAsInt()));
+            jProgressBar1.setValue(100);
         } catch (MalformedURLException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Gagal menampilkan data!", "Error", ERROR);
         } catch (IOException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Gagal menampilkan data!", "Error", ERROR);
         }
         
         lastIndex = curIndex;
@@ -376,6 +391,14 @@ public class AddGameWindow extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         new SaveStockWindow(curIndex).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Gunakan kotak pencarian di pojok kiri atas untuk\n"
+                + "mencari game.\n\n"
+                + "PERHATIAN: beberapa game tidak dapat ditambahkan ke daftar\n"
+                + "karena masalah pada server.");
+    }//GEN-LAST:event_jMenu1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -392,11 +415,12 @@ public class AddGameWindow extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AddGameWindow().setVisible(true);
+                
             }
         });
     }
@@ -412,12 +436,13 @@ public class AddGameWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel5;
