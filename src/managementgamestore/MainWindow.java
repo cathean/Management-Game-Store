@@ -188,6 +188,11 @@ public class MainWindow extends javax.swing.JFrame {
         btnDelete.setFocusable(false);
         btnDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnEdit.setBackground(new java.awt.Color(242, 242, 242));
         btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uiassets/fi-xnsuxt-edit-solid.png"))); // NOI18N
@@ -690,6 +695,11 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
         refreshGameTable();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showConfirmDialog(null, "Hapus Data?", "Delete", JOptionPane.YES_NO_OPTION);
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
