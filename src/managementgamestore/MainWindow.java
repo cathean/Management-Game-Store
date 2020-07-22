@@ -684,11 +684,12 @@ public class MainWindow extends javax.swing.JFrame {
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         curIndex = jTable1.getSelectedRow();
-        JOptionPane.showConfirmDialog(rootPane, "Yakin ingin menghapus game ini?");
-        
-        long id_game = gs.get(curIndex).id_game;
-        dbm.delGameList(id_game);
-        refreshGameTable();
+        int option = JOptionPane.showConfirmDialog(null, "Yakin ingin menghapus data ini", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (option == JOptionPane.YES_OPTION){
+            long id_game = gs.get(curIndex).id_game;
+            dbm.delGameList(id_game);
+            refreshGameTable();
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
