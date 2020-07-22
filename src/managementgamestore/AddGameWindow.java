@@ -342,6 +342,7 @@ public class AddGameWindow extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(AddGameWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     jProgressBar1.setValue(100);
     int row = jTable1.getRowCount();
     jLabel1.setText("Hasil pencarian : "+row);
