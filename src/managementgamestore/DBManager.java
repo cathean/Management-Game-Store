@@ -521,6 +521,23 @@ class DBManager {
         }
     }
     
+    public void delGameList(long id_game){
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "DELETE FROM `gamestore`.`game` WHERE `id_game` = ?";
+        try{
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setLong(1, id_game);
+            preparedStmt.execute();
+            System.out.println("Succesfully deleted rows in game list");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void findIdGame(String nama_game){
+        Connection conn = this.getConnection(usr, pwd, host, db);
+    }
+    
     public void updateOrder(String nama_pembeli, String email, float jumlah_harga, String metode, int id_pembeli, int id_pesanan) {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query = "UPDATE `gamestore`.`pemesanan` SET "
