@@ -71,8 +71,6 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnLog = new javax.swing.JButton();
         btnDiscount = new javax.swing.JButton();
-        btnCancel = new javax.swing.JButton();
-        btnSave = new javax.swing.JButton();
         btnVer = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
         btnSetting = new javax.swing.JButton();
@@ -90,7 +88,6 @@ public class MainWindow extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         btnReceipt = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Management Game Store");
@@ -276,20 +273,6 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        btnCancel.setBackground(new java.awt.Color(242, 242, 242));
-        btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uiassets/fi-cnsuxt-times-solid.png"))); // NOI18N
-        btnCancel.setToolTipText("Cancel all modified data.");
-        btnCancel.setFocusable(false);
-        btnCancel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCancel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-
-        btnSave.setBackground(new java.awt.Color(242, 242, 242));
-        btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uiassets/fi-xnsuxt-hard-floppy.png"))); // NOI18N
-        btnSave.setToolTipText("Save the database to the cloud.");
-        btnSave.setFocusable(false);
-        btnSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSave.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-
         btnVer.setBackground(new java.awt.Color(242, 242, 242));
         btnVer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uiassets/fi-cnldxt-exclamation-mark.png"))); // NOI18N
         btnVer.setToolTipText("Show softaware information such as version, developer, etc.");
@@ -420,13 +403,6 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uiassets/refresh-64x64.png"))); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -438,10 +414,6 @@ public class MainWindow extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnReceipt)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -462,8 +434,6 @@ public class MainWindow extends javax.swing.JFrame {
                         .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLog)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDiscount)
@@ -480,14 +450,12 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnSetting)
-                            .addComponent(btnVer))
-                        .addComponent(btnUser, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnLog, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnDiscount, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addComponent(jButton3))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnSetting)
+                        .addComponent(btnVer))
+                    .addComponent(btnUser, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnLog, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnDiscount, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -500,8 +468,6 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnShop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnReceipt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -597,8 +563,10 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        if(jTabbedPane1.getSelectedIndex() == 0)
+        if(jTabbedPane1.getSelectedIndex() == 0) {
             new AddGameWindow().setVisible(true);
+            this.dispose();
+        } 
         else if(jTabbedPane1.getSelectedIndex() == 1)
             System.out.println();
             //new SaveStockVouchWindow(curIndex).setVisible(true);
@@ -676,11 +644,6 @@ public class MainWindow extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null,"Coming soon");
     }//GEN-LAST:event_btnDiscountActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        refreshGameTable();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         curIndex = jTable1.getSelectedRow();
@@ -729,20 +692,17 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnDiscount;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnLog;
     private javax.swing.JButton btnReceipt;
-    private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSetting;
     private javax.swing.JButton btnShop;
     private javax.swing.JButton btnUser;
     private javax.swing.JButton btnVer;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel12;

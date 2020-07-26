@@ -118,6 +118,8 @@ public class LoginWindow extends javax.swing.JFrame {
         if(dbm.admin != null) {
             this.dispose();
             new MainWindow().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Login error!");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -34,10 +34,6 @@
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnSave" min="-2" pref="53" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnCancel" min="-2" pref="52" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="btnReceipt" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -65,8 +61,6 @@
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="jButton3" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
               <Component id="btnLog" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnDiscount" min="-2" max="-2" attributes="0"/>
@@ -85,16 +79,13 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="btnSetting" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnVer" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="btnUser" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnLog" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnDiscount" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="btnSetting" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnVer" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnUser" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnLog" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnDiscount" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
@@ -109,8 +100,6 @@
                   <Component id="btnEdit" max="32767" attributes="0"/>
                   <Component id="btnShop" max="32767" attributes="0"/>
                   <Component id="jPanel4" alignment="0" max="32767" attributes="0"/>
-                  <Component id="btnCancel" alignment="0" max="32767" attributes="0"/>
-                  <Component id="btnSave" alignment="0" max="32767" attributes="0"/>
                   <Component id="btnAdd" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
                   <Component id="btnReceipt" alignment="0" max="32767" attributes="0"/>
               </Group>
@@ -429,34 +418,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDiscountActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnCancel">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="f2" green="f2" red="f2" type="rgb"/>
-        </Property>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/uiassets/fi-cnsuxt-times-solid.png"/>
-        </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Cancel all modified data."/>
-        <Property name="focusable" type="boolean" value="false"/>
-        <Property name="horizontalTextPosition" type="int" value="0"/>
-        <Property name="verticalTextPosition" type="int" value="3"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnSave">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="f2" green="f2" red="f2" type="rgb"/>
-        </Property>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/uiassets/fi-xnsuxt-hard-floppy.png"/>
-        </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Save the database to the cloud."/>
-        <Property name="focusable" type="boolean" value="false"/>
-        <Property name="horizontalTextPosition" type="int" value="0"/>
-        <Property name="verticalTextPosition" type="int" value="3"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="btnVer">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -677,16 +638,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReceiptActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/uiassets/refresh-64x64.png"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
