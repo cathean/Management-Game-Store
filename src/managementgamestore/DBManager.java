@@ -508,6 +508,19 @@ class DBManager {
         }
     }
     
+    public void delAdmin(long id_admin){
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "DELETE FROM `gamestore`.`admin` WHERE `id_admin` = ?";
+        try{
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setLong(1, id_admin);
+            preparedStmt.execute();
+            System.out.println("Succesfully deleted rows in admin list");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void delDetailProduct(int id_pesanan) {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query = "DELETE FROM `gamestore`.`detail_produk` WHERE `id_pesanan` = ?";

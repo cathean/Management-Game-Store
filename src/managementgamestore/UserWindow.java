@@ -21,14 +21,16 @@ public class UserWindow extends javax.swing.JFrame {
     DBManager dbm = DBManager.getInstance();
     ArrayList<UserStruct> adminList = dbm.fetchAdmin();
     DefaultTableModel model = null;
+    private int Index = -1;
 
     /**
      * Creates new form UserSetting
      */
+    
     public UserWindow() {
         initComponents();
         
-        model = (DefaultTableModel) jTable1.getModel();
+        model = (DefaultTableModel) jTable1.getModel();   
         
         // Add all the current list admin into the table
         for(int i = 0; i < adminList.size(); i++) {
@@ -275,6 +277,11 @@ public class UserWindow extends javax.swing.JFrame {
 
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton3.setText("Delete");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -326,6 +333,7 @@ public class UserWindow extends javax.swing.JFrame {
                 return;
         }
         
+        JOptionPane.showMessageDialog(null, "Pengguna baru telah ditambahkan");
         dbm.saveAdmin(
                 jTextField2.getText(), 
                 jTextField3.getText(), 
@@ -334,6 +342,8 @@ public class UserWindow extends javax.swing.JFrame {
                 tipe);
         
         model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        adminList = dbm.fetchAdmin();
         
         // Add all the current list admin into the table
         for(int i = 0; i < adminList.size(); i++) {
@@ -363,6 +373,36 @@ public class UserWindow extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        Index = jTable1.getSelectedRow();
+        int option = JOptionPane.showConfirmDialog(null, "Yakin ingin menghapus data ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (option == JOptionPane.YES_OPTION){
+            long id_admin = adminList.get(Index).id_admin;
+            dbm.delAdmin(id_admin);
+            
+            /* refresh table pake trik close/open window awikwok
+            dispose();
+            new UserWindow().setVisible(true); */
+            
+            // refresh table
+            model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            adminList = dbm.fetchAdmin();
+        
+            // Add all the current list admin into the table
+            for(int i = 0; i < adminList.size(); i++) {
+                model.addRow(new Object[] {
+                    adminList.get(i).id_admin,
+                    adminList.get(i).username,
+                    adminList.get(i).name,
+                    adminList.get(i).kontak,
+                    adminList.get(i).tipe
+                });
+            }
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
