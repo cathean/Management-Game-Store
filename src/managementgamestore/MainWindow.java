@@ -193,6 +193,11 @@ public class MainWindow extends javax.swing.JFrame {
         btnEdit.setFocusable(false);
         btnEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEdit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnShop.setBackground(new java.awt.Color(242, 242, 242));
         btnShop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uiassets/fi-xwsuht-shopping-cart-solid.png"))); // NOI18N
@@ -623,9 +628,13 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void btnReceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReceiptActionPerformed
         if(!isDoTrans) {
-            isDoTrans = true;
-            dbm.saveOrder(1);
-            id_order = dbm.fetchLatestOrderID();
+            int option = JOptionPane.showConfirmDialog(null, "Make new transaction?", "Confirmation", JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION){
+                isDoTrans = true;
+                dbm.saveOrder(1);
+                id_order = dbm.fetchLatestOrderID();
+                JOptionPane.showMessageDialog(null, "New transaction with number : " + id_order);
+            }
         } else {
             System.out.println("Already make a transaction! with id : " + dbm.fetchLatestOrderID());
         }
@@ -654,6 +663,11 @@ public class MainWindow extends javax.swing.JFrame {
             refreshGameTable();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        new EditGameWindow(curIndex).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnEditActionPerformed
 
     /**
      * @param args the command line arguments

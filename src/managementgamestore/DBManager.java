@@ -150,6 +150,27 @@ class DBManager {
         return gs;
     }
     
+    public ArrayList<String> fetchCode(long id_game) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "SELECT game_code FROM game_code WHERE `game_code`.`id_game`=?";
+        ArrayList<String> s = new ArrayList<String>();
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setLong(1, id_game);
+            ResultSet rs = preparedStmt.executeQuery();
+            
+            while(rs.next()) {
+                s.add(rs.getString("game_code"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return s;
+    }
+    
     public ArrayList<UserStruct> fetchAdmin() {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query = "SELECT * FROM `gamestore`.`admin`";
@@ -572,6 +593,39 @@ class DBManager {
             preparedStmt.setInt(6, id_pesanan);
             preparedStmt.execute();
             System.out.println("Order updated!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updateGameCodeList(ArrayList<String> code_list, long id_game) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "DELETE FROM `game_code` WHERE `id_game`=?";
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setLong(1, id_game);
+            preparedStmt.execute();
+            System.out.println("Succesfully delete all code list!");
+            saveGameCode(code_list, id_game);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updatePriceTaxGame(float harga, float pajak, long id_game) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "UPDATE `gamestore`.`game` SET `harga` = ? , `pajak` = ? WHERE `id_game` = ?";
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setFloat(1, harga);
+            preparedStmt.setFloat(2, pajak);
+            preparedStmt.setLong(3, id_game);
+            preparedStmt.execute();
+            System.out.println("Game details updated!");
         } catch (SQLException ex) {
             Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
         }
