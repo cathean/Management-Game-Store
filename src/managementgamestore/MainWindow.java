@@ -494,6 +494,15 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
     
+    public void refreshPaymentTable() {
+        model2.setRowCount(0);
+        ps = dbm.fetchPaymentMethodList();
+        
+        for(int i = 0; i < ps.size(); i++) {
+            model2.addRow(new Object[] {ps.get(i).jenis, ps.get(i).no_rek});
+        }
+    }
+    
     public void InitOtherComponent() {
         //jTable1.getColumn("Details").setCellRenderer(new CustomTableRenderer().new ButtonRenderer());
         //jTable1.getColumn("Details").setCellEditor(new CustomTableRenderer().new ButtonEditor(new JCheckBox()));
@@ -573,6 +582,8 @@ public class MainWindow extends javax.swing.JFrame {
             this.dispose();
         } 
         else if(jTabbedPane1.getSelectedIndex() == 1)
+            this.dispose();
+            new AddPaymentWindow().setVisible(true);
             System.out.println();
             //new SaveStockVouchWindow(curIndex).setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
@@ -599,11 +610,14 @@ public class MainWindow extends javax.swing.JFrame {
                     // Saving to the the table detail_produk
                     // Also the total price already cut by tax
                     dbm.saveDetailProduct((Float)model1.getValueAt(curIndex, 1) * Integer.parseInt(jTextField2.getText()) - (Float)model1.getValueAt(curIndex, 2), Integer.parseInt(jTextField2.getText()), gs.get(curIndex).id_game, id_order);
+                    JOptionPane.showMessageDialog(null, "Added to cart!!");
                 } else {
+                    JOptionPane.showMessageDialog(null, "Not enough stock!");
                     System.out.println("Stock not enough!");
                     return;
                 }
             } else {
+                JOptionPane.showMessageDialog(null, "Please, press make new transaction first!");
                 System.out.println("Press the new transaction button first!");
             }
         // Payment method's tab panel
@@ -623,7 +637,10 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnShopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShopActionPerformed
-        new TransWindow().setVisible(true);
+        if(id_order == -1)
+            JOptionPane.showMessageDialog(null, "Please, make new transaction first");
+        else
+            new TransWindow().setVisible(true);
     }//GEN-LAST:event_btnShopActionPerformed
 
     private void btnReceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReceiptActionPerformed
@@ -655,12 +672,24 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        curIndex = jTable1.getSelectedRow();
-        int option = JOptionPane.showConfirmDialog(null, "Yakin ingin menghapus data ini", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        if (option == JOptionPane.YES_OPTION){
-            long id_game = gs.get(curIndex).id_game;
-            dbm.delGameList(id_game);
-            refreshGameTable();
+        
+        if(jTabbedPane1.getSelectedIndex() == 0) {
+           curIndex = jTable1.getSelectedRow();
+            int option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirmation", JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION){
+                long id_game = gs.get(curIndex).id_game;
+                dbm.delGameList(id_game);
+                refreshGameTable();
+                JOptionPane.showMessageDialog(null, "Data succesfully deleted!");
+            }
+        } else if (jTabbedPane1.getSelectedIndex() == 1) {
+            int option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirmation", JOptionPane.YES_NO_OPTION);
+            
+            if (option == JOptionPane.YES_OPTION) {
+                dbm.delPayment(ps.get(jTable3.getSelectedRow()).id_pembayaran);
+                refreshPaymentTable();
+                JOptionPane.showMessageDialog(null, "Data succesfully deleted!");
+            }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 

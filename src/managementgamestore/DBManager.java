@@ -278,14 +278,14 @@ class DBManager {
             
             // Make new query for game
             for(int i = 0; i < id_gameList.size(); i++) {             
-                query = "SELECT `nama_game`, `harga` FROM `game` WHERE `id_game`=?";
+                query = "SELECT `id_game`, `nama_game`, `harga` FROM `game` WHERE `id_game`=?";
                 preparedStmt = conn.prepareStatement(query);
 
                 preparedStmt.setLong(1, id_gameList.get(i));
                 rs = preparedStmt.executeQuery();
                 
                 if(rs.next()) {
-                    product.add(new FinalProductStruct(rs.getString("nama_game"), qty_gameList.get(i), rs.getFloat("harga"), qty_gameList.get(i) * rs.getFloat("harga")));
+                    product.add(new FinalProductStruct(rs.getLong("id_game"), rs.getString("nama_game"), qty_gameList.get(i), rs.getFloat("harga"), qty_gameList.get(i) * rs.getFloat("harga")));
                     System.out.println("Product added! : " + product.get(product.size() - 1).nama_produk);
                 }
             } 
@@ -529,6 +529,22 @@ class DBManager {
         }
     }
     
+    public void savePayment(String name, String no) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "INSERT INTO `gamestore`.`jenis_pembayaran` (`jenis`, `no_rek`) VALUES (?, ?)";
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setString(1, name);
+            preparedStmt.setString(2, no);
+            preparedStmt.execute();
+            System.out.println("Succesfully save it into the pembayaran table!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void delAdmin(long id_admin){
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query = "DELETE FROM `gamestore`.`admin` WHERE `id_admin` = ?";
@@ -563,6 +579,20 @@ class DBManager {
             preparedStmt.setLong(1, id_game);
             preparedStmt.execute();
             System.out.println("Succesfully deleted rows in game list");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void delPayment(int id_payment) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "DELETE FROM `gamestore`.`jenis_pembayaran` WHERE `id_pembayaran` = ?";
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setInt(1, id_payment);
+            preparedStmt.execute();
+            System.out.println("Succesfully delete rows in pembayaran");
         } catch (SQLException ex) {
             Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -631,9 +661,11 @@ class DBManager {
         }
     }
     
-    public void revealGameCode(long id_game, int qty) {
+    public ArrayList<String> revealGameCode(long id_game, int qty) {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query = "SELECT `id_game_code`, `game_code` FROM `game_code` WHERE `id_game`=? LIMIT ?";
+        ArrayList<String> codeList = new ArrayList<String>();
+        ArrayList<Integer> idList = new ArrayList<Integer>();
         
         try {
             PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -643,11 +675,25 @@ class DBManager {
             ResultSet rs = preparedStmt.executeQuery();
             
             while(rs.next()) {
-                
+                codeList.add(rs.getString("game_code"));
+                idList.add(rs.getInt("id_game_code"));
             }
+            
+            query = "DELETE FROM `gamestore`.`game_code` WHERE `id_game_code` = ?";
+            preparedStmt = conn.prepareStatement(query);
+            
+            for(int i = 0; i < idList.size(); i++) {
+                preparedStmt.setInt(1, idList.get(i));
+                
+                preparedStmt.execute();
+            }
+            System.out.println("Succesfully reveal the code! and delete em");
+            
         } catch (SQLException ex) {
             Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return codeList;
     }
     
     public void login(String username, String pass) {

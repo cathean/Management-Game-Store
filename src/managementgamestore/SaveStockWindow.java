@@ -191,7 +191,7 @@ public class SaveStockWindow extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         ArrayList<String> code_list = new ArrayList<String>();
-        JOptionPane.showMessageDialog(null, "Game berhasil ditambahkan", "Message",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Game succesfully stocked!", "Message",JOptionPane.INFORMATION_MESSAGE);
         for(int i = 0; i < model.getRowCount(); i++) {
             if(!(model.getValueAt(i, 0) == null)) {
                 code_list.add((String)model.getValueAt(i, 0));
@@ -209,6 +209,14 @@ public class SaveStockWindow extends javax.swing.JFrame {
                     String.join(",", GameUtils.JArrayToArray(GameAPIRequest.infoGameResults.get(i).getAsJsonObject("result").getAsJsonArray("alsoAvailableOn"))),
                     Integer.parseInt(jTextField2.getText()),
                     GameAPIRequest.infoGameResults.get(i).getAsJsonObject("result").get("image").getAsString());
+        }
+        
+        try {
+            Float.parseFloat(jTextField1.getText());
+            Float.parseFloat(jTextField2.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error!, Please only use numbers!", "Message",JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
         
         dbm.saveGameCode(code_list, id_game);
