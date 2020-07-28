@@ -7,6 +7,7 @@
 package managementgamestore;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.DefaultKeyboardFocusManager;
 import javax.swing.UIManager;
 
 /**
@@ -14,7 +15,7 @@ import javax.swing.UIManager;
  * @author ryans
  */
 public class SettingWindow extends javax.swing.JFrame {
-
+    DBManager dbm = DBManager.getInstance();
     /** Creates new form SettingWindow */
     public SettingWindow() {
         initComponents();
@@ -47,21 +48,21 @@ public class SettingWindow extends javax.swing.JFrame {
         setTitle("Setting");
         setResizable(false);
 
-        jTextField1.setText("root");
+        jTextField1.setText("kodingan_gamestore\t");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
 
-        jTextField3.setText("gamestore");
+        jTextField3.setText("kodingan_gamestore");
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
             }
         });
 
-        jTextField4.setText("localhost");
+        jTextField4.setText("koding2an.web.id");
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField4ActionPerformed(evt);
@@ -75,7 +76,7 @@ public class SettingWindow extends javax.swing.JFrame {
             }
         });
 
-        jPasswordField1.setText("root");
+        jPasswordField1.setText("gamestore19");
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);
@@ -195,7 +196,11 @@ public class SettingWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        dbm.usr = jTextField1.getText();
+        dbm.pwd = new String(jPasswordField1.getPassword());
+        dbm.host = jTextField3.getText();
+        dbm.port = jTextField5.getText();
+        dbm.db = jTextField4.getText();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed

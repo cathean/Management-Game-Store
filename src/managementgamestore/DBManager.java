@@ -18,10 +18,11 @@ import java.util.logging.Logger;
  * @author ivans
  */
 class DBManager {
-    public static String usr = "root";
-    public static String pwd = "";
-    public static String host = "localhost";
-    public static String db = "gamestore";
+    public static String usr = "kodingan_gamestore";
+    public static String pwd = "comforteagle19";
+    public static String host = "koding2an.web.id";
+    public static String port = "3306";
+    public static String db = "kodingan_gamestore";
     public static UserStruct admin;
     
     // These below are singleton application
@@ -62,7 +63,7 @@ class DBManager {
         try {
             System.out.println("Connecting to a " + db + " database...");
             
-            String url = "jdbc:mysql://" + host + ":3306/" + db;
+            String url = "jdbc:mysql://" + host + ":" + port + "/" + db;
             Connection conn = DriverManager.getConnection(url, usr, pwd);
             
             System.out.println("Connected database successfully...");   
@@ -77,7 +78,7 @@ class DBManager {
     
     public ArrayList<Float> fetchPriceAndTaxGameByID(long id_game) {
         Connection conn = DBManager.getConnection(usr, pwd, host, db);
-        String query = "SELECT * FROM `gamestore`.`game` WHERE `game`.`id_game`=?";
+        String query = "SELECT * FROM game WHERE `game`.`id_game`=?";
         ArrayList<Float> arr = new ArrayList<Float>();
         
         try {
@@ -102,7 +103,7 @@ class DBManager {
     
     public int fetchGameStockCount(long id_game) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "SELECT COUNT(*) as stock FROM `gamestore`.`game_code`, `gamestore`.`game` "
+        String query = "SELECT COUNT(*) as stock FROM game_code, game "
                 + "WHERE `game_code`.id_game=`game`.`id_game` AND `game`.id_game=?";
         int count = 0;
         
@@ -125,7 +126,7 @@ class DBManager {
     
     public ArrayList<GameStruct> fetchGameStock() {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "SELECT * FROM `gamestore`.`game`";
+        String query = "SELECT * FROM game";
         ArrayList<GameStruct> gs = new ArrayList<GameStruct>();
         
         try {
@@ -173,7 +174,7 @@ class DBManager {
     
     public ArrayList<UserStruct> fetchAdmin() {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "SELECT * FROM `gamestore`.`admin`";
+        String query = "SELECT * FROM admin";
         ArrayList<UserStruct> adminList = new ArrayList<UserStruct>();
         
         try {
@@ -198,7 +199,7 @@ class DBManager {
     
     public int fetchLatestOrderID() {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "SELECT MAX(id_pesanan) AS id FROM `gamestore`.`pemesanan`";
+        String query = "SELECT MAX(id_pesanan) AS id FROM pemesanan";
         int id = -1;
         
         try {
@@ -218,7 +219,7 @@ class DBManager {
     
         public int fetchLatestCustomerID() {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "SELECT MAX(id_pembeli) AS id FROM `gamestore`.`pembeli`";
+        String query = "SELECT MAX(id_pembeli) AS id FROM pembeli";
         int id = -1;
         
         try {
@@ -547,7 +548,7 @@ class DBManager {
     
     public void delAdmin(long id_admin){
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "DELETE FROM `gamestore`.`admin` WHERE `id_admin` = ?";
+        String query = "DELETE FROM admin WHERE `id_admin` = ?";
         try{
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setLong(1, id_admin);
@@ -560,7 +561,7 @@ class DBManager {
     
     public void delDetailProduct(int id_pesanan) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "DELETE FROM `gamestore`.`detail_produk` WHERE `id_pesanan` = ?";
+        String query = "DELETE FROM detail_produk WHERE `id_pesanan` = ?";
         try {
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setInt(1, id_pesanan);
@@ -573,7 +574,7 @@ class DBManager {
     
     public void delGameList(long id_game){
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "DELETE FROM `gamestore`.`game` WHERE `id_game` = ?";
+        String query = "DELETE FROM game WHERE `id_game` = ?";
         try{
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setLong(1, id_game);
@@ -586,7 +587,7 @@ class DBManager {
     
     public void delPayment(int id_payment) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "DELETE FROM `gamestore`.`jenis_pembayaran` WHERE `id_pembayaran` = ?";
+        String query = "DELETE FROM jenis_pembayaran WHERE `id_pembayaran` = ?";
         
         try {
             PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -679,7 +680,7 @@ class DBManager {
                 idList.add(rs.getInt("id_game_code"));
             }
             
-            query = "DELETE FROM `gamestore`.`game_code` WHERE `id_game_code` = ?";
+            query = "DELETE FROM game_code WHERE `id_game_code` = ?";
             preparedStmt = conn.prepareStatement(query);
             
             for(int i = 0; i < idList.size(); i++) {
@@ -698,7 +699,7 @@ class DBManager {
     
     public void login(String username, String pass) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "SELECT * FROM `gamestore`.`admin` WHERE username=? AND PASSWORD=?";
+        String query = "SELECT * FROM admin WHERE username=? AND PASSWORD=?";
         
         try {
             PreparedStatement preparedStmt = conn.prepareStatement(query);
