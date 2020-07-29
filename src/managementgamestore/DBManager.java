@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 class DBManager {
     public static String usr = "kodingan_gamestore";
-    public static String pwd = "comforteagle19";
+    public static String pwd = "zfdceAnt";
     public static String host = "koding2an.web.id";
     public static String port = "3306";
     public static String db = "kodingan_gamestore";
@@ -397,7 +397,7 @@ class DBManager {
     public void saveGameData(long id_game, float harga, String nama, String deskripsi, String genre, String platform, float pajak, String url) {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query =
-                "INSERT INTO `gamestore`.`game` "
+                "INSERT INTO `game` "
                 + "(`id_game`, `harga`, `nama_game`, `deskripsi`, `genre`, `platform`, `pajak`, `url`) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
@@ -422,7 +422,7 @@ class DBManager {
     
     public void saveGameCode(ArrayList<String> game_code, long id_game) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "INSERT INTO `gamestore`.`game_code` (`game_code`, `id_game`) VALUES (?, ?)";
+        String query = "INSERT INTO `game_code` (`game_code`, `id_game`) VALUES (?, ?)";
         
         try {
             PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -442,7 +442,7 @@ class DBManager {
     
     public void saveDetailProduct(float harga, int kuantitas_game, long id_game, int id_pesanan) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "INSERT INTO `gamestore`.`detail_produk` "
+        String query = "INSERT INTO `detail_produk` "
                 + "(`total_harga`, `kuantitas_game`, `id_game`, `id_pesanan`) "
                 + "VALUES (?, ?, ?, ?)";
         
@@ -472,7 +472,7 @@ class DBManager {
     
     public void saveOrder(int id_admin) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "INSERT INTO `gamestore`.`pemesanan` "
+        String query = "INSERT INTO `pemesanan` "
                 + "(`tgl_pembelian`, `nama_karyawan`, `status`, `id_admin`) "
                 + "VALUES (?, ?, ?, ?); ";
         
@@ -492,7 +492,7 @@ class DBManager {
     
     public void saveCustomer(String nama, String email, int id_pembayaran) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "INSERT INTO `gamestore`.`pembeli` "
+        String query = "INSERT INTO `pembeli` "
                 + "(`nama`, `email`, `id_pembayaran`) "
                 + "VALUES (?, ?, ?)";
         
@@ -511,7 +511,7 @@ class DBManager {
     
     public void saveAdmin(String nama, String kontak, String username, String password, String tipe) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "INSERT INTO `gamestore`.`admin` "
+        String query = "INSERT INTO `admin` "
                 + "(`Nama`, `Kontak`, `username`, `password`, `tipe`) "
                 + "VALUES (?, ?, ?, ?, ?)";
         
@@ -532,7 +532,7 @@ class DBManager {
     
     public void savePayment(String name, String no) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "INSERT INTO `gamestore`.`jenis_pembayaran` (`jenis`, `no_rek`) VALUES (?, ?)";
+        String query = "INSERT INTO `jenis_pembayaran` (`jenis`, `no_rek`) VALUES (?, ?)";
         
         try {
             PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -605,7 +605,7 @@ class DBManager {
     
     public void updateOrder(String nama_pembeli, String email, float jumlah_harga, String metode, int id_pembeli, int id_pesanan) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "UPDATE `gamestore`.`pemesanan` SET "
+        String query = "UPDATE `pemesanan` SET "
                 + "`nama_pembeli` = ? , "
                 + "`email` = ? , "
                 + "`jumlah_harga` = ? , "
@@ -647,7 +647,7 @@ class DBManager {
     
     public void updatePriceTaxGame(float harga, float pajak, long id_game) {
         Connection conn = this.getConnection(usr, pwd, host, db);
-        String query = "UPDATE `gamestore`.`game` SET `harga` = ? , `pajak` = ? WHERE `id_game` = ?";
+        String query = "UPDATE `game` SET `harga` = ? , `pajak` = ? WHERE `id_game` = ?";
         
         try {
             PreparedStatement preparedStmt = conn.prepareStatement(query);
