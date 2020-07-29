@@ -54,9 +54,11 @@ public class UserWindow extends javax.swing.JFrame {
         
         // Check type of admin and enable user creation if admin
         if(dbm.admin != null && !dbm.admin.tipe.equals("admin")) {
+            jButton3.setEnabled(false);
+            jTable1.setEnabled(false);   
             for (Component cp : jPanel3.getComponents() ){
                  cp.setEnabled(false);
- }
+            }       
         }
     }
 
@@ -401,6 +403,7 @@ public class UserWindow extends javax.swing.JFrame {
                     adminList.get(i).tipe
                 });
             }
+            
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
