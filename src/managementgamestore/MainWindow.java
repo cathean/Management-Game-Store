@@ -581,11 +581,12 @@ public class MainWindow extends javax.swing.JFrame {
             new AddGameWindow().setVisible(true);
             this.dispose();
         } 
-        else if(jTabbedPane1.getSelectedIndex() == 1)
+        else if(jTabbedPane1.getSelectedIndex() == 1) {
             this.dispose();
             new AddPaymentWindow().setVisible(true);
             System.out.println();
             //new SaveStockVouchWindow(curIndex).setVisible(true);
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerActionPerformed
