@@ -583,7 +583,7 @@ public class MainWindow extends javax.swing.JFrame {
         } 
         else if(jTabbedPane1.getSelectedIndex() == 1) {
             this.dispose();
-            new AddPaymentWindow().setVisible(true);
+            new AddPaymentWindow(false, -1).setVisible(true);
             System.out.println();
             //new SaveStockVouchWindow(curIndex).setVisible(true);
         }
@@ -695,7 +695,12 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        new EditGameWindow(curIndex).setVisible(true);
+        if(jTabbedPane1.getSelectedIndex() == 0) {
+            new EditGameWindow(curIndex).setVisible(true);
+        } else if (jTabbedPane1.getSelectedIndex() == 1){
+            new AddPaymentWindow(true, jTable3.getSelectedRow()).setVisible(true);
+        }
+        
         this.dispose();
     }//GEN-LAST:event_btnEditActionPerformed
 

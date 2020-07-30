@@ -6,6 +6,7 @@
 package managementgamestore;
 
 import java.awt.DefaultKeyboardFocusManager;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,11 +15,22 @@ import javax.swing.JOptionPane;
  */
 public class AddPaymentWindow extends javax.swing.JFrame {
     private DBManager dbm = DBManager.getInstance();
+    private ArrayList<PaymentStruct> ps = new ArrayList<PaymentStruct>();
+    boolean saveMode = false;
+    int curIndex = -1;
     /**
      * Creates new form AddPayment
      */
-    public AddPaymentWindow() {
+    public AddPaymentWindow(boolean saveMode, int curIndex) {
         initComponents();
+        this.saveMode = saveMode;
+        this.curIndex = curIndex;
+        
+        if(saveMode) {
+            ps = dbm.fetchPaymentMethodList();
+            jTextField1.setText(ps.get(curIndex).jenis);
+            jTextField2.setText(ps.get(curIndex).no_rek);
+        }
     }
 
     /**
@@ -98,8 +110,14 @@ public class AddPaymentWindow extends javax.swing.JFrame {
             return;
         }
         
-        dbm.savePayment(jTextField1.getText(), jTextField2.getText());
-        JOptionPane.showMessageDialog(null, "Succesfully add new payment method!");
+        if(saveMode) {
+            dbm.updatePaymentMethod(ps.get(curIndex).id_pembayaran, jTextField1.getText(), jTextField2.getText());
+            JOptionPane.showMessageDialog(null, "Succesfully edit payment method!");
+        } else {
+            dbm.savePayment(jTextField1.getText(), jTextField2.getText());
+            JOptionPane.showMessageDialog(null, "Succesfully add new payment method!");
+        }
+        
         this.dispose();
         new MainWindow().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -131,13 +149,6 @@ public class AddPaymentWindow extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddPaymentWindow().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -335,11 +335,11 @@ public class UserWindow extends javax.swing.JFrame {
                 return;
         }
         
-        JOptionPane.showMessageDialog(null, "Pengguna baru telah ditambahkan");
+        JOptionPane.showMessageDialog(null, "Added new user!");
         dbm.saveAdmin(
                 jTextField2.getText(), 
                 jTextField3.getText(), 
-                jTextField2.getText(), 
+                jTextField1.getText(), 
                 new String(jPasswordField1.getPassword()), 
                 tipe);
         

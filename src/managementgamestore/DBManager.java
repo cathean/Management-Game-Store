@@ -645,6 +645,25 @@ class DBManager {
         }
     }
     
+    public void updatePaymentMethod(int id_payment, String name, String norek) {
+        Connection conn = this.getConnection(usr, pwd, host, db);
+        String query = "UPDATE `jenis_pembayaran` SET "
+                + "`jenis` = ? , `no_rek` = ? "
+                + "WHERE `id_pembayaran` = ? ";
+        
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            
+            preparedStmt.setString(1, name);
+            preparedStmt.setString(2, norek);
+            preparedStmt.setInt(3, id_payment);
+            preparedStmt.execute();
+            System.out.println("Succesfully updated pembayaran!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void updatePriceTaxGame(float harga, float pajak, long id_game) {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query = "UPDATE `game` SET `harga` = ? , `pajak` = ? WHERE `id_game` = ?";
