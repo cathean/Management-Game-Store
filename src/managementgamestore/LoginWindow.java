@@ -113,13 +113,17 @@ public class LoginWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        dbm.login(jTextField1.getText().toString(), new String(jPasswordField1.getPassword()));
+        try {
+            dbm.login(jTextField1.getText().toString(), new String(jPasswordField1.getPassword()));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         
         if(dbm.admin != null) {
             this.dispose();
             new MainWindow().setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "Login error!");
+            JOptionPane.showMessageDialog(this, "Login error!\nCheck your username/password.");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
