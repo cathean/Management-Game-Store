@@ -76,6 +76,17 @@ class DBManager {
         return null;
     }
     
+    public void createTrigGame() {
+        try {
+            Connection conn = DBManager.getConnection(usr, pwd, host, db);
+            String query = "CREATE OR REPLACE TRIGGER update_game AFTER UPDATE on `game` FOR EACH ROW INSERT INTO history_game VALUES (OLD.id_game, OLD.nama_game, OLD.harga, OLD.pajak, '" + admin.name + "')";
+            conn.createStatement().execute(query);
+            System.out.println("Succesfully triggered history_game!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public ArrayList<Float> fetchPriceAndTaxGameByID(long id_game) {
         Connection conn = DBManager.getConnection(usr, pwd, host, db);
         String query = "SELECT * FROM game WHERE `game`.`id_game`=?";

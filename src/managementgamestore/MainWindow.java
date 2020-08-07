@@ -506,6 +506,7 @@ public class MainWindow extends javax.swing.JFrame {
     public void InitOtherComponent() {
         //jTable1.getColumn("Details").setCellRenderer(new CustomTableRenderer().new ButtonRenderer());
         //jTable1.getColumn("Details").setCellEditor(new CustomTableRenderer().new ButtonEditor(new JCheckBox()));
+        dbm.createTrigGame();
         model1 = (DefaultTableModel) jTable1.getModel();
         model2 = (DefaultTableModel) jTable3.getModel();
         jTextArea1.setLineWrap(true);
