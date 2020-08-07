@@ -481,7 +481,7 @@ class DBManager {
         }
     }
     
-    public void saveOrder(int id_admin) {
+    public void saveOrder() {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query = "INSERT INTO `pemesanan` "
                 + "(`tgl_pembelian`, `nama_karyawan`, `status`, `id_admin`) "
@@ -493,7 +493,7 @@ class DBManager {
             preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStmt.setString(2, this.admin.name);
             preparedStmt.setString(3, "ONGOING");
-            preparedStmt.setInt(4, id_admin);
+            preparedStmt.setInt(4, this.admin.id_admin);
             preparedStmt.execute();
             System.out.println("Succesfully save it into the pemesanan table!");
         } catch (SQLException ex) {

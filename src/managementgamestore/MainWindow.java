@@ -650,7 +650,7 @@ public class MainWindow extends javax.swing.JFrame {
             int option = JOptionPane.showConfirmDialog(null, "Make new transaction?", "Confirmation", JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION){
                 isDoTrans = true;
-                dbm.saveOrder(1);
+                dbm.saveOrder();
                 id_order = dbm.fetchLatestOrderID();
                 JOptionPane.showMessageDialog(null, "New transaction with number : " + id_order);
             }
