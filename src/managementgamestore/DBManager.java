@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 class DBManager {
     public static String usr = "kodingan_gamestore";
-    public static String pwd = "zfdceAnt";
+    public static String pwd = "comforteagle19";
     public static String host = "koding2an.web.id";
     public static String port = "3306";
     public static String db = "kodingan_gamestore";
