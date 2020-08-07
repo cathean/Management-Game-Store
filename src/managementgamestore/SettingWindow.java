@@ -8,9 +8,13 @@ package managementgamestore;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.DefaultKeyboardFocusManager;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 /**
@@ -238,12 +242,31 @@ public class SettingWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        JOptionPane.showMessageDialog(null, "Sebelum melakukan SQL Dump harap telah menginstall XAMPP");
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command("cmd.exe", "/c", "C:\\xampp\\mysql\\bin\\mysqldump -u kodingan_gamestore -pcomforteagle19 kodingan_gamestore -h kurawa.dnsbit.net > file.sql");
+        
         try {
-            String path = "C:\\xampp\\mysql\\bin\\mysqldump -u kodingan_gamestore -pcomforteagle19 kodingan_gamestore -h kurawa.dnsbit.net > file.sql";
-            Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec(path);
-        } catch (IOException ex) {
-            Logger.getLogger(SettingWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Process process = processBuilder.start();
+            StringBuilder output = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line + "\n");
+            }
+
+            int exitVal = process.waitFor();
+            if (exitVal == 0) {
+                JOptionPane.showMessageDialog(null, "SQL Dump berhasil! Tersimpan di parent project");
+                System.out.println("Success!");
+                System.out.println(output);
+                System.exit(0);
+            } else {
+                //abnormal...
+            }
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
