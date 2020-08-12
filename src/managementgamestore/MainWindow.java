@@ -468,6 +468,7 @@ public class MainWindow extends javax.swing.JFrame {
     public void InitOtherComponent() {
         //jTable1.getColumn("Details").setCellRenderer(new CustomTableRenderer().new ButtonRenderer());
         //jTable1.getColumn("Details").setCellEditor(new CustomTableRenderer().new ButtonEditor(new JCheckBox()));
+        dbm.createTrigGame();
         model1 = (DefaultTableModel) jTable1.getModel();
         model2 = (DefaultTableModel) jTable3.getModel();
         jTextArea1.setLineWrap(true);
@@ -613,7 +614,7 @@ public class MainWindow extends javax.swing.JFrame {
             int option = JOptionPane.showConfirmDialog(null, "Make new transaction?", "Confirmation", JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION){
                 isDoTrans = true;
-                dbm.saveOrder(1);
+                dbm.saveOrder();
                 id_order = dbm.fetchLatestOrderID();
                 JOptionPane.showMessageDialog(null, "New transaction with number : " + id_order);
             }

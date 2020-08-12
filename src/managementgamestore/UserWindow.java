@@ -29,7 +29,7 @@ public class UserWindow extends javax.swing.JFrame {
     
     public UserWindow() {
         initComponents();
-        
+        dbm.createTrigUser();
         model = (DefaultTableModel) jTable1.getModel();   
         
         // Add all the current list admin into the table

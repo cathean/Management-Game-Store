@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 class DBManager {
     public static String usr = "kodingan_gamestore";
-    public static String pwd = "zfdceAnt";
+    public static String pwd = "comforteagle19";
     public static String host = "koding2an.web.id";
     public static String port = "3306";
     public static String db = "kodingan_gamestore";
@@ -74,6 +74,28 @@ class DBManager {
         }
         
         return null;
+    }
+    
+    public void createTrigGame() {
+        try {
+            Connection conn = DBManager.getConnection(usr, pwd, host, db);
+            String query = "CREATE OR REPLACE TRIGGER update_game AFTER UPDATE on `game` FOR EACH ROW INSERT INTO history_game VALUES (OLD.id_game, OLD.nama_game, OLD.harga, OLD.pajak, '" + admin.name + "')";
+            conn.createStatement().execute(query);
+            System.out.println("Succesfully triggered history_game!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void createTrigUser(){
+        try {
+            Connection conn = DBManager.getConnection(usr, pwd, host, db);
+            String query = "CREATE OR REPLACE TRIGGER update_user AFTER INSERT on `admin` FOR EACH ROW INSERT INTO history_admin VALUES (Id_admin, Nama, Kontak, '" + admin.name + "')";
+            conn.createStatement().execute(query);
+            System.out.println("Succesfully triggered history_user!");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public ArrayList<Float> fetchPriceAndTaxGameByID(long id_game) {
@@ -470,7 +492,7 @@ class DBManager {
         }
     }
     
-    public void saveOrder(int id_admin) {
+    public void saveOrder() {
         Connection conn = this.getConnection(usr, pwd, host, db);
         String query = "INSERT INTO `pemesanan` "
                 + "(`tgl_pembelian`, `nama_karyawan`, `status`, `id_admin`) "
@@ -482,7 +504,7 @@ class DBManager {
             preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStmt.setString(2, this.admin.name);
             preparedStmt.setString(3, "ONGOING");
-            preparedStmt.setInt(4, id_admin);
+            preparedStmt.setInt(4, this.admin.id_admin);
             preparedStmt.execute();
             System.out.println("Succesfully save it into the pemesanan table!");
         } catch (SQLException ex) {
