@@ -114,6 +114,16 @@ public class AddPaymentWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(jTextField1.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Fill the name!");
+            return;
+        }
+        
+        if(jTextField2.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Fill no!");
+            return;
+        }
+        
         try {
             Integer.parseInt(jTextField2.getText());
         } catch (NumberFormatException e) {

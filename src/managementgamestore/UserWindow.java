@@ -323,6 +323,26 @@ public class UserWindow extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String tipe = jComboBox1.getSelectedItem().toString();
         
+        if(jTextField1.getText().equals("")) {
+                    JOptionPane.showMessageDialog(this, "Fill username!");
+                    return;
+        }
+        
+        if(jTextField2.getText().equals("")) {
+                    JOptionPane.showMessageDialog(this, "Fill name!");
+                    return;
+        }
+        
+        if(new String(jPasswordField1.getText()).equals("")) {
+                    JOptionPane.showMessageDialog(this, "Fill password!");
+                    return;
+        }
+        
+        if(jTextField2.getText().equals("")) {
+                    JOptionPane.showMessageDialog(this, "Fill contact!");
+                    return;
+        }
+        
         switch(tipe) {
             case "Employee" :
                 tipe = "karyawan";

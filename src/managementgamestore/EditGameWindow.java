@@ -184,6 +184,16 @@ public class EditGameWindow extends javax.swing.JFrame {
             }
         }
         
+        if(jTextField1.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Fill the price!");
+            return;
+        }
+        
+        if(jTextField2.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Fill the tax!");
+            return;
+        }
+        
         try {
             Float.parseFloat(jTextField1.getText());
             Float.parseFloat(jTextField2.getText());

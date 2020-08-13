@@ -312,11 +312,24 @@ public class TransWindow extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirmation", JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION){
+                 if(jTextField1.getText().equals("")) {
+                    JOptionPane.showMessageDialog(this, "Fill username!");
+                    return;
+                }
+                
+                if(jTextField2.getText().equals("")) {
+                    JOptionPane.showMessageDialog(this, "Fill email!");
+                    return;
+                }
+                
+                
                  // Save customer data to the table
                 dbm.saveCustomer(jTextField1.getText(), jTextField2.getText(), dbm.fetchPaymentMethodID(jComboBox1.getSelectedItem().toString()));
                 // Update the order transaction in the table
                 dbm.updateOrder(jTextField1.getText(), jTextField2.getText(), finalOrder.totalSemuaHarga, jComboBox1.getSelectedItem().toString(), dbm.fetchLatestCustomerID(), finalOrder.id_pesanan);
-
+                
+               
+                
                 // Send Message of the code key to the email
                 for (Component cp : jPanel4.getComponents())
                     cp.setEnabled(true);
